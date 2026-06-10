@@ -1,0 +1,156 @@
+{
+  "file": "shots",
+  "version": "1.0-v1",
+  "updated": "2026-06-10",
+  "langs": ["ru", "pt", "en"],
+  "note": "Техника ударов. verify:true почти везде — технику выверяет Эдгар (его профессия). how — 3-4 коротких шага. mistake — частая ошибка новичка. club — ссылка на id из glossary.",
+  "shots": [
+    {
+      "id": "drive", "club": "driver", "verify": true, "anchor": "",
+      "ru": {
+        "name": "Драйв (дальний с ти)",
+        "when": "Первый удар на длинной лунке (пар-4/5), мяч стоит на ти.",
+        "how": ["Мяч высоко на ти, напротив передней ноги.", "Стойка шире плеч, вес ровно.", "Плавный полный замах — разгоняй корпусом, не руками.", "Контакт по мячу на восходящем движении (бей чуть вверх)."],
+        "mistake": "Бьёшь руками изо всех сил — теряешь контроль. Сила идёт от плавного разгона тела."
+      },
+      "pt": {
+        "name": "Drive (longa do tee)",
+        "when": "Primeira pancada num buraco longo (par 4/5), bola no tee.",
+        "how": ["Bola alta no tee, à frente do pé da frente.", "Postura mais larga que os ombros, peso equilibrado.", "Swing completo e suave — acelera com o corpo, não com os braços.", "Contacto na bola em movimento ascendente (bate ligeiramente para cima)."],
+        "mistake": "Bater só com os braços com toda a força — perdes controlo. A força vem do corpo a acelerar suave."
+      },
+      "en": {
+        "name": "Drive (long off the tee)",
+        "when": "First shot on a long hole (par 4/5), ball on a tee.",
+        "how": ["Ball high on the tee, off your lead foot.", "Stance wider than shoulders, weight even.", "Smooth full swing — power from the body, not the arms.", "Strike the ball on the way up (hit slightly upward)."],
+        "mistake": "Swinging all-out with the arms kills control. Power comes from the body accelerating smoothly."
+      }
+    },
+    {
+      "id": "ironshot", "club": "iron", "verify": true, "anchor": "",
+      "ru": {
+        "name": "Удар айроном (с фервея)",
+        "when": "С травы фервея на средние дистанции, целишься к грину.",
+        "how": ["Мяч примерно по центру стойки.", "Вес чуть больше на передней ноге.", "Бей по мячу ВНИЗ — дёрн берёшь ПОСЛЕ мяча.", "Доведи движение до конца, корпус смотрит на цель."],
+        "mistake": "Пытаешься «поддеть» мяч вверх — выходит топ. Бей вниз, мяч взлетит сам за счёт угла клюшки."
+      },
+      "pt": {
+        "name": "Pancada de ferro (do fairway)",
+        "when": "Da relva do fairway, distâncias médias, a apontar ao green.",
+        "how": ["Bola mais ou menos ao centro da postura.", "Peso ligeiramente mais no pé da frente.", "Bate na bola para BAIXO — a relva sai DEPOIS da bola.", "Termina o movimento, corpo virado ao alvo."],
+        "mistake": "Tentar 'levantar' a bola — sai topada. Bate para baixo; a bola sobe sozinha pelo loft do taco."
+      },
+      "en": {
+        "name": "Iron shot (from the fairway)",
+        "when": "From the fairway grass, medium distance, aiming at the green.",
+        "how": ["Ball roughly centre of your stance.", "Weight slightly on the lead foot.", "Hit DOWN on the ball — take turf AFTER the ball.", "Finish the motion, body facing the target."],
+        "mistake": "Trying to scoop the ball up causes a top. Hit down; the loft lifts it for you."
+      }
+    },
+    {
+      "id": "approach", "club": "wedge", "verify": true, "anchor": "",
+      "ru": {
+        "name": "Подход к грину",
+        "when": "Близко к грину, надо аккуратно посадить мяч на грин.",
+        "how": ["Возьми ведж или короткий айрон.", "Замах короче полного.", "Дистанцию задавай ДЛИНОЙ замаха, не силой.", "Целься в конкретную точку приземления."],
+        "mistake": "Бьёшь на всю силу — перелетаешь грин. Расстояние = длина замаха."
+      },
+      "pt": {
+        "name": "Aproximação ao green",
+        "when": "Perto do green, é preciso pousar a bola no green com cuidado.",
+        "how": ["Pega num wedge ou ferro curto.", "Swing mais curto que o completo.", "A distância vem do COMPRIMENTO do swing, não da força.", "Aponta a um ponto concreto de aterragem."],
+        "mistake": "Bater com toda a força — passas o green. Distância = comprimento do swing."
+      },
+      "en": {
+        "name": "Approach to the green",
+        "when": "Close to the green, you need to land the ball softly on it.",
+        "how": ["Take a wedge or short iron.", "Swing shorter than full.", "Set distance by swing LENGTH, not power.", "Aim at a specific landing spot."],
+        "mistake": "Hitting full power flies the green. Distance = length of swing."
+      }
+    },
+    {
+      "id": "chip", "club": "wedge", "verify": true, "anchor": "",
+      "ru": {
+        "name": "Чип (короткий накат)",
+        "when": "Чуть за грином, между тобой и грином мало травы.",
+        "how": ["Узкая стойка, мяч ближе к задней ноге.", "Руки впереди мяча.", "Короткое движение, как маятник.", "Мало лёта — много катится, как патт."],
+        "mistake": "Пытаешься зачерпнуть мяч — выходит топ. Веди клюшку вниз и вперёд."
+      },
+      "pt": {
+        "name": "Chip (aproximação curta)",
+        "when": "Logo a seguir ao green, pouca relva entre ti e o green.",
+        "how": ["Postura estreita, bola mais para o pé de trás.", "Mãos à frente da bola.", "Movimento curto, como um pêndulo.", "Pouco voo — muito rolar, como um putt."],
+        "mistake": "Tentar apanhar a bola por baixo — sai topada. Leva o taco para baixo e à frente."
+      },
+      "en": {
+        "name": "Chip (short roll)",
+        "when": "Just off the green, little grass between you and the green.",
+        "how": ["Narrow stance, ball back toward rear foot.", "Hands ahead of the ball.", "Short pendulum motion.", "Little air — lots of roll, like a putt."],
+        "mistake": "Trying to scoop the ball causes a top. Move the club down and forward."
+      }
+    },
+    {
+      "id": "pitch", "club": "wedge", "verify": true, "anchor": "",
+      "ru": {
+        "name": "Питч (высокий короткий)",
+        "when": "Надо перелететь препятствие у грина и быстро остановить мяч.",
+        "how": ["Открой грань веджа.", "Замах шире, чем у чипа.", "Ускоряйся ЧЕРЕЗ мяч, не тормози.", "Высокий мягкий полёт, мяч садится почти без наката."],
+        "mistake": "Тормозишь на мяче от неуверенности — слабый удар. Ускоряйся сквозь мяч."
+      },
+      "pt": {
+        "name": "Pitch (curto e alto)",
+        "when": "É preciso passar por cima de um obstáculo e parar a bola depressa.",
+        "how": ["Abre a face do wedge.", "Swing mais amplo que o chip.", "Acelera ATRAVÉS da bola, não trava.", "Voo alto e suave, a bola pousa quase sem rolar."],
+        "mistake": "Travar na bola por insegurança — pancada fraca. Acelera através da bola."
+      },
+      "en": {
+        "name": "Pitch (short and high)",
+        "when": "You must fly an obstacle near the green and stop the ball fast.",
+        "how": ["Open the wedge face.", "Swing wider than a chip.", "Accelerate THROUGH the ball, don't decelerate.", "High soft flight, lands with little roll."],
+        "mistake": "Decelerating into the ball from doubt = weak shot. Accelerate through it."
+      }
+    },
+    {
+      "id": "bunkershot", "club": "sandwedge", "verify": true, "anchor": "",
+      "ru": {
+        "name": "Удар из бункера",
+        "when": "Мяч лежит в песке.",
+        "how": ["Сэнд-ведж, стойка и грань клюшки открыты.", "Целься в песок ЗА мячом (2-3 см).", "Бей по ПЕСКУ, не по мячу — песок выбросит мяч.", "Обязательно доведи движение до конца."],
+        "mistake": "От страха бьёшь прямо по мячу — он улетает через грин. Бей в песок за мячом."
+      },
+      "pt": {
+        "name": "Pancada de bunker",
+        "when": "A bola está na areia.",
+        "how": ["Sand wedge, postura e face do taco abertas.", "Aponta à areia ATRÁS da bola (2-3 cm).", "Bate na AREIA, não na bola — a areia lança a bola.", "Termina sempre o movimento."],
+        "mistake": "Com medo, bater direto na bola — passa o green. Bate na areia atrás da bola."
+      },
+      "en": {
+        "name": "Bunker shot",
+        "when": "The ball is in the sand.",
+        "how": ["Sand wedge, stance and face open.", "Aim at the sand BEHIND the ball (2-3 cm).", "Hit the SAND, not the ball — the sand throws the ball out.", "Always finish the swing."],
+        "mistake": "Hitting the ball directly out of fear flies it over the green. Hit the sand behind the ball."
+      }
+    },
+    {
+      "id": "putt", "club": "putter", "verify": true, "anchor": "",
+      "ru": {
+        "name": "Паттинг (на грине)",
+        "when": "Мяч на грине, надо катить в лунку.",
+        "how": ["Глаза прямо над мячом.", "Качают плечи, как маятник, кисти спокойны.", "Прочитай линию: уклон грина, куда покатится.", "Ровный темп: назад и вперёд одинаково. Голову не поднимай до удара."],
+        "mistake": "Бьёшь кистями и подглядываешь раньше времени — мяч уходит мимо. Качай плечами, смотри в мяч."
+      },
+      "pt": {
+        "name": "Putt (no green)",
+        "when": "Bola no green, é preciso rolá-la para o buraco.",
+        "how": ["Olhos mesmo por cima da bola.", "Movem os ombros, como pêndulo, os pulsos calmos.", "Lê a linha: a inclinação do green, para onde a bola vai.", "Ritmo regular: para trás e para a frente iguais. Não levantes a cabeça antes de bater."],
+        "mistake": "Bater com os pulsos e espreitar cedo demais — falhas. Move os ombros, olha para a bola."
+      },
+      "en": {
+        "name": "Putting (on the green)",
+        "when": "Ball on the green, you need to roll it into the hole.",
+        "how": ["Eyes directly over the ball.", "Shoulders rock like a pendulum, wrists quiet.", "Read the line: the green's slope, where it will break.", "Even tempo: back and through equal. Keep your head down until after the strike."],
+        "mistake": "Using the wrists and peeking early sends it off line. Rock the shoulders, watch the ball."
+      }
+    }
+  ]
+}

@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0E3B2E">
+<title>Birdie — урок гольфа на твоём языке</title>
+<link rel="manifest" href="app.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --fairway:#0E3B2E;        /* трава фервея — фон */
+    --fairway-2:#12493A;      /* трава светлее — карточки */
+    --fairway-3:#16574520;    /* стекло */
+    --sand:#EAD9A8;           /* песок бункера */
+    --sand-text:#F2E8CE;      /* основной текст */
+    --sand-dim:#BFB089;       /* приглушённый */
+    --gold:#F0C24A;           /* флаг / солнце — действие */
+    --gold-deep:#D9A93250;
+    --sky:#BFE3E8;            /* небо — полёт мяча */
+    --ink:#091C15;
+    --line:#1F6450;
+    --shadow:0 8px 30px rgba(0,0,0,.30);
+    --r:18px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%}
+  body{
+    font-family:'Manrope',system-ui,sans-serif;
+    background:var(--fairway);
+    color:var(--sand-text);
+    line-height:1.5;
+    overscroll-behavior:none;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.disp{font-family:'Fraunces',Georgia,serif;font-weight:600;letter-spacing:-.01em}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+  .hidden{display:none!important}
+
+  /* ===== Экран выбора языка ===== */
+  #langScreen{
+    min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:32px 24px;text-align:center;gap:8px;
+    background:radial-gradient(120% 80% at 50% 0%, #155843 0%, var(--fairway) 60%);
+  }
+  .bird-wrap{width:120px;height:96px;margin-bottom:8px}
+  .bird-path{fill:none;stroke:var(--gold);stroke-width:6;stroke-linecap:round;stroke-linejoin:round}
+  .brand{font-size:clamp(44px,13vw,64px);font-weight:700;color:var(--sand-text);line-height:1}
+  .tag{color:var(--gold);font-size:17px;font-weight:600;margin-bottom:28px}
+  .pick-sub{color:var(--sand-dim);font-size:15px;max-width:280px;margin-bottom:22px}
+  .lang-list{display:flex;flex-direction:column;gap:12px;width:100%;max-width:340px}
+  .lang-btn{
+    display:flex;align-items:center;gap:16px;padding:18px 22px;border-radius:var(--r);
+    background:var(--fairway-2);border:1.5px solid var(--line);
+    font-size:20px;font-weight:600;color:var(--sand-text);transition:transform .12s,border-color .12s;
+  }
+  .lang-btn:active{transform:scale(.97)}
+  .lang-btn .flag{font-size:30px;line-height:1}
+  .lang-btn:hover{border-color:var(--gold)}
+
+  /* ===== App shell ===== */
+  #app{min-height:100dvh;display:flex;flex-direction:column}
+  header{
+    position:sticky;top:0;z-index:20;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:14px 18px;padding-top:max(14px,env(safe-area-inset-top));
+    background:rgba(14,59,46,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);
+  }
+  .logo{display:flex;align-items:center;gap:9px;font-family:'Fraunces';font-weight:700;font-size:22px;color:var(--sand-text)}
+  .logo svg{width:30px;height:24px}
+  .logo .bird-path{stroke:var(--gold);stroke-width:7}
+  .lang-switch{
+    display:flex;align-items:center;gap:7px;padding:7px 13px;border-radius:999px;
+    background:var(--fairway-2);border:1px solid var(--line);font-size:15px;font-weight:600;
+  }
+  .lang-switch:active{transform:scale(.95)}
+
+  main{flex:1;padding:20px 18px 110px;max-width:680px;width:100%;margin:0 auto}
+  .view{animation:fade .3s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  .eyebrow{color:var(--gold);font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+  .view-title{font-size:30px;color:var(--sand-text);margin-bottom:4px}
+  .view-sub{color:var(--sand-dim);font-size:15px;margin-bottom:20px}
+
+  /* ===== Session card ===== */
+  .session-card{
+    background:linear-gradient(150% 100% at 0% 0%, #18604A 0%, var(--fairway-2) 70%);
+    border:1px solid var(--line);border-radius:24px;padding:26px 22px;box-shadow:var(--shadow);margin-bottom:22px;
+  }
+  .session-badge{display:inline-block;background:var(--gold);color:var(--ink);font-size:12px;font-weight:700;
+    text-transform:uppercase;letter-spacing:.06em;padding:5px 11px;border-radius:999px;margin-bottom:14px}
+  .session-title{font-size:34px;line-height:1.05;color:var(--sand-text);margin-bottom:4px}
+  .session-orig{color:var(--gold);font-size:16px;font-weight:600;font-style:italic;margin-bottom:16px}
+  .session-focus{color:var(--sand-text);font-size:16px;opacity:.92}
+  .session-jump{display:flex;gap:10px;margin-top:20px}
+  .jump-btn{flex:1;background:var(--fairway);border:1px solid var(--line);border-radius:14px;padding:14px;
+    text-align:center;font-weight:600;font-size:15px;transition:transform .12s}
+  .jump-btn:active{transform:scale(.96)}
+  .jump-btn b{display:block;font-size:24px;font-family:'Fraunces';color:var(--gold)}
+
+  /* ===== Search + chips ===== */
+  .search{width:100%;padding:14px 16px;border-radius:14px;background:var(--fairway-2);
+    border:1px solid var(--line);color:var(--sand-text);font-size:16px;margin-bottom:14px}
+  .search::placeholder{color:var(--sand-dim)}
+  .search:focus{outline:none;border-color:var(--gold)}
+  .chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:14px;margin:0 -18px 6px;padding-left:18px;padding-right:18px;-webkit-overflow-scrolling:touch}
+  .chips::-webkit-scrollbar{display:none}
+  .chip{white-space:nowrap;padding:8px 15px;border-radius:999px;background:var(--fairway-2);
+    border:1px solid var(--line);font-size:14px;font-weight:600;color:var(--sand-dim);flex:0 0 auto}
+  .chip.on{background:var(--gold);color:var(--ink);border-color:var(--gold)}
+
+  /* ===== Cards ===== */
+  .card{background:var(--fairway-2);border:1px solid var(--line);border-radius:var(--r);
+    margin-bottom:11px;overflow:hidden;transition:border-color .15s}
+  .card.flight{border-color:#3a7d8a}
+  .card-head{padding:16px 18px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+  .card-head:active{background:var(--fairway-3)}
+  .term-main{font-family:'Fraunces';font-size:21px;font-weight:600;color:var(--sand-text);line-height:1.15}
+  .term-alt{color:var(--gold);font-size:14px;font-weight:600;margin-top:3px}
+  .term-alt span{color:var(--sand-dim);font-weight:500}
+  .chev{color:var(--sand-dim);font-size:13px;flex:0 0 auto;margin-top:5px;transition:transform .2s}
+  .card.open .chev{transform:rotate(90deg)}
+  .verify-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--gold);margin-left:6px;vertical-align:middle;opacity:.75}
+  .card-body{max-height:0;overflow:hidden;transition:max-height .28s ease}
+  .card.open .card-body{max-height:600px}
+  .card-body-inner{padding:0 18px 18px;color:var(--sand-text);font-size:15.5px;opacity:.94}
+  .verify-note{color:var(--sand-dim);font-size:12px;font-style:italic;margin-top:10px;display:flex;align-items:center;gap:5px}
+
+  .shot-block{margin-top:13px}
+  .shot-block .lbl{color:var(--gold);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+  .shot-block ol{margin:0;padding-left:20px}
+  .shot-block ol li{margin-bottom:4px}
+  .shot-block .mistake{color:var(--sand-text);background:var(--gold-deep);border-left:3px solid var(--gold);padding:10px 12px;border-radius:0 10px 10px 0}
+
+  .qa-q{font-family:'Fraunces';font-size:18px;font-weight:600;color:var(--sand-text);line-height:1.25}
+  .rule-num{font-family:'Fraunces';font-size:15px;color:var(--gold);font-weight:700;margin-right:8px}
+
+  /* ===== Hub CTA ===== */
+  .hub{margin-top:26px;background:linear-gradient(150% 100% at 100% 0%, #16574520, transparent);
+    border:1px dashed var(--line);border-radius:var(--r);padding:20px;text-align:center}
+  .hub h3{font-size:18px;color:var(--sand-text);margin-bottom:5px}
+  .hub p{color:var(--sand-dim);font-size:14px;margin-bottom:14px}
+  .hub a{display:inline-block;background:var(--gold);color:var(--ink);font-weight:700;font-size:15px;
+    padding:12px 22px;border-radius:999px;text-decoration:none}
+  .hub a:active{transform:scale(.96)}
+
+  /* ===== Bottom nav ===== */
+  nav{position:fixed;bottom:0;left:0;right:0;z-index:30;display:flex;
+    background:rgba(9,28,21,.96);backdrop-filter:blur(12px);border-top:1px solid var(--line);
+    padding-bottom:env(safe-area-inset-bottom)}
+  .nav-btn{flex:1;padding:9px 2px 11px;display:flex;flex-direction:column;align-items:center;gap:3px;
+    color:var(--sand-dim);font-size:11px;font-weight:600;transition:color .15s}
+  .nav-btn .ic{font-size:21px;line-height:1}
+  .nav-btn.on{color:var(--gold)}
+
+  .ask-box{background:var(--fairway-2);border:1px dashed var(--line);border-radius:var(--r);padding:18px;text-align:center;margin-bottom:18px}
+  .ask-box .soon{color:var(--gold);font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+  .ask-box p{color:var(--sand-dim);font-size:14px}
+
+  .empty{color:var(--sand-dim);text-align:center;padding:40px 20px;font-size:15px}
+
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<!-- ===== Экран выбора языка ===== -->
+<div id="langScreen">
+  <div class="bird-wrap">
+    <svg viewBox="0 0 120 96" class="bird-anim">
+      <path class="bird-path" d="M10 64 C 30 40, 46 36, 60 48 C 70 56, 80 56, 92 40 C 86 54, 78 64, 60 64 C 78 70, 96 72, 112 60 C 100 78, 80 86, 60 78 C 44 72, 24 74, 10 64 Z"/>
+    </svg>
+  </div>
+  <div class="brand">Birdie</div>
+  <div class="tag" id="ls-tag">Урок гольфа — на твоём языке</div>
+  <div class="pick-sub" id="ls-sub">Урок, термины и ответы тренера — на нём</div>
+  <div class="lang-list" id="langList"></div>
+</div>
+
+<!-- ===== App ===== -->
+<div id="app" class="hidden">
+  <header>
+    <div class="logo">
+      <svg viewBox="0 0 120 96"><path class="bird-path" d="M10 64 C 30 40, 46 36, 60 48 C 70 56, 80 56, 92 40 C 86 54, 78 64, 60 64 C 78 70, 96 72, 112 60 C 100 78, 80 86, 60 78 C 44 72, 24 74, 10 64 Z"/></svg>
+      Birdie
+    </div>
+    <button class="lang-switch" id="langSwitch" onclick="App.toggleLang()"><span id="curFlag">🇷🇺</span><span id="curCode">RU</span> ▾</button>
+  </header>
+  <main id="view"></main>
+  <nav id="nav"></nav>
+</div>
+
+<script>
+const App = {
+  manifest:null, ui:null, content:{}, lang:'ru', view:'session',
+
+  async boot(){
+    try{ this.manifest = await this.get('manifest.json'); }
+    catch(e){ document.body.innerHTML = '<p style="padding:40px;color:#EAD9A8">Не удалось загрузить Birdie. Открой по ссылке GitHub Pages.</p>'; return; }
+    // язык: ?lang= → сохранённый → дефолт
+    const url = new URLSearchParams(location.search).get('lang');
+    const saved = this.store('get','lang');
+    const chosen = [url, saved].find(c => c && this.manifest.langs.some(l=>l.code===c));
+    this.renderLangScreen();
+    if(chosen){ this.start(chosen); }
+  },
+
+  renderLangScreen(){
+    const list = document.getElementById('langList');
+    list.innerHTML = this.manifest.langs.filter(l=>l.live).map(l=>
+      `<button class="lang-btn" onclick="App.start('${l.code}')"><span class="flag">${l.flag}</span> ${l.name}</button>`
+    ).join('');
+  },
+
+  async start(code){
+    this.lang = code;
+    this.store('set','lang',code);
+    const L = this.manifest.langs.find(l=>l.code===code);
+    document.documentElement.lang = code;
+    document.documentElement.dir = L.dir || 'ltr';
+    // грузим локаль + весь контент (один раз)
+    this.ui = await this.get(L.ui);
+    if(!this.content.glossary){
+      const c = this.manifest.content;
+      [this.content.glossary,this.content.shots,this.content.qa,this.content.sessions,this.content.rules] =
+        await Promise.all([this.get(c.glossary),this.get(c.shots),this.get(c.qa),this.get(c.sessions),this.get(c.rules)]);
+    }
+    document.getElementById('langScreen').classList.add('hidden');
+    document.getElementById('app').classList.remove('hidden');
+    document.getElementById('curFlag').textContent = L.flag;
+    document.getElementById('curCode').textContent = code.toUpperCase();
+    this.renderNav();
+    this.go(this.view);
+  },
+
+  toggleLang(){
+    document.getElementById('app').classList.add('hidden');
+    document.getElementById('langScreen').classList.remove('hidden');
+  },
+
+  renderNav(){
+    const n = this.ui.nav;
+    const items = [['session','⛳',n.session],['terms','📖',n.terms],['shots','🎯',n.shots],['qa','💬',n.qa],['rules','📋',n.rules]];
+    document.getElementById('nav').innerHTML = items.map(([v,ic,lbl])=>
+      `<button class="nav-btn ${v===this.view?'on':''}" data-v="${v}" onclick="App.go('${v}')"><span class="ic">${ic}</span>${lbl}</button>`
+    ).join('');
+  },
+
+  go(v){
+    this.view = v;
+    document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('on',b.dataset.v===v));
+    window.scrollTo(0,0);
+    ({session:this.vSession,terms:this.vTerms,shots:this.vShots,qa:this.vQa,rules:this.vRules}[v]).call(this);
+  },
+
+  esc(s){ return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); },
+  lc(o){ return o[this.lang] || o.en || o.ru || ''; }, // pick lang from {ru,pt,en} object
+
+  // ===== SESSION =====
+  vSession(){
+    const today = this.content.sessions.todaySession || this.manifest.todaySession;
+    const s = this.content.sessions.sessions.find(x=>x.n===today);
+    const v = document.getElementById('view');
+    if(!s || s.status!=='ready' || !s.title || !this.lc(s.title)){
+      v.innerHTML = `<div class="view"><div class="empty">${this.ui.noSession}</div>${this.hubHtml()}</div>`; return;
+    }
+    const origPt = s.title.pt && this.lang!=='pt' ? `<div class="session-orig">«${this.esc(s.title.pt)}»</div>` : '';
+    const focus = s.focus ? `<div class="session-focus">${this.esc(this.lc(s.focus))}</div>` : '';
+    const nT = (s.terms||[]).length, nS = (s.shots||[]).length;
+    v.innerHTML = `<div class="view">
+      <div class="session-card">
+        <span class="session-badge">${this.esc(this.ui.sessionLabel)}</span>
+        <div class="session-title">${this.esc(this.lc(s.title))}</div>
+        ${origPt}
+        ${focus}
+        <div class="session-jump">
+          <button class="jump-btn" onclick="App.go('terms')"><b>${nT}</b>${this.esc(this.ui.sessionTerms)}</button>
+          <button class="jump-btn" onclick="App.go('shots')"><b>${nS}</b>${this.esc(this.ui.sessionShots)}</button>
+        </div>
+      </div>
+      ${this.hubHtml()}
+    </div>`;
+  },
+
+  // ===== TERMS =====
+  termState:{q:'',cat:'all'},
+  vTerms(){
+    const g = this.content.glossary;
+    const A=this.ui.allGroups; const cats = [{id:'all',ru:A,pt:A,en:A,icon:''}].concat(g.categories);
+    const v = document.getElementById('view');
+    v.innerHTML = `<div class="view">
+      <div class="eyebrow">Birdie</div>
+      <h2 class="view-title">${this.esc(this.ui.termsTitle)}</h2>
+      <input class="search" id="termSearch" placeholder="${this.esc(this.ui.search)}" value="${this.esc(this.termState.q)}" oninput="App.termState.q=this.value;App.renderTerms()">
+      <div class="chips" id="termChips">${cats.map(c=>
+        `<button class="chip ${this.termState.cat===c.id?'on':''}" onclick="App.termState.cat='${c.id}';App.vTerms()">${c.icon||''} ${this.esc(this.lc(c))}</button>`).join('')}</div>
+      <div id="termList"></div>
+    </div>`;
+    this.renderTerms();
+    const inp=document.getElementById('termSearch'); if(this.termState.q){inp.focus();inp.setSelectionRange(inp.value.length,inp.value.length);}
+  },
+  renderTerms(){
+    const g = this.content.glossary, q=this.termState.q.toLowerCase().trim(), cat=this.termState.cat;
+    let items = g.terms.filter(t=>cat==='all'||t.cat===cat);
+    if(q) items = items.filter(t=>['ru','pt','en'].some(l=>(t[l].term+' '+t[l].desc).toLowerCase().includes(q)));
+    const order = ['ru','pt','en'];
+    const others = order.filter(l=>l!==this.lang);
+    const list = document.getElementById('termList');
+    if(!items.length){ list.innerHTML=`<div class="empty">—</div>`; return; }
+    list.innerHTML = items.map(t=>{
+      const alt = others.map(l=>`${this.esc(t[l].term)}`).join(' · ');
+      const fl = t.cat==='flight'?'flight':'';
+      const vn = t.verify?`<div class="verify-note">⚑ ${this.esc(this.ui.verifyNote)}</div>`:'';
+      return `<div class="card ${fl}"><div class="card-head" onclick="this.parentNode.classList.toggle('open')">
+        <div><div class="term-main">${this.esc(t[this.lang].term)}</div>
+        <div class="term-alt"><span>${this.esc(alt)}</span></div></div>
+        <div class="chev">▶</div></div>
+        <div class="card-body"><div class="card-body-inner">${this.esc(t[this.lang].desc)}${vn}</div></div></div>`;
+    }).join('');
+  },
+
+  // ===== SHOTS =====
+  vShots(){
+    const sh = this.content.shots.shots, v=document.getElementById('view');
+    v.innerHTML = `<div class="view">
+      <div class="eyebrow">Birdie</div>
+      <h2 class="view-title">${this.esc(this.ui.shotsTitle)}</h2>
+      <div id="shotList">${sh.map(s=>{
+        const d=s[this.lang];
+        const how=(d.how||[]).map(h=>`<li>${this.esc(h)}</li>`).join('');
+        return `<div class="card"><div class="card-head" onclick="this.parentNode.classList.toggle('open')">
+          <div><div class="term-main">${this.esc(d.name)}</div>
+          <div class="term-alt"><span>${this.esc(d.when)}</span></div></div>
+          <div class="chev">▶</div></div>
+          <div class="card-body"><div class="card-body-inner">
+            <div class="shot-block"><div class="lbl">${this.esc(this.ui.shotWhen)}</div>${this.esc(d.when)}</div>
+            <div class="shot-block"><div class="lbl">${this.esc(this.ui.shotHow)}</div><ol>${how}</ol></div>
+            <div class="shot-block"><div class="lbl">${this.esc(this.ui.shotMistake)}</div><div class="mistake">${this.esc(d.mistake)}</div></div>
+          </div></div></div>`;
+      }).join('')}</div>
+    </div>`;
+  },
+
+  // ===== QA =====
+  qaState:{q:''},
+  vQa(){
+    const v=document.getElementById('view');
+    v.innerHTML = `<div class="view">
+      <div class="eyebrow">Birdie</div>
+      <h2 class="view-title">${this.esc(this.ui.qaTitle)}</h2>
+      <div class="view-sub">${this.esc(this.ui.qaSub)}</div>
+      <div class="ask-box"><div class="soon">${this.esc(this.ui.ask)}</div><p>${this.esc(this.ui.askSoon)}</p></div>
+      <input class="search" id="qaSearch" placeholder="${this.esc(this.ui.search)}" value="${this.esc(this.qaState.q)}" oninput="App.qaState.q=this.value;App.renderQa()">
+      <div id="qaList"></div>
+    </div>`;
+    this.renderQa();
+    const inp=document.getElementById('qaSearch'); if(this.qaState.q){inp.focus();inp.setSelectionRange(inp.value.length,inp.value.length);}
+  },
+  renderQa(){
+    const q=this.qaState.q.toLowerCase().trim();
+    let items=this.content.qa.qa;
+    if(q) items=items.filter(x=>['ru','pt','en'].some(l=>(x.q[l]+' '+x.a[l]).toLowerCase().includes(q)));
+    const list=document.getElementById('qaList');
+    if(!items.length){ list.innerHTML=`<div class="empty">—</div>`; return; }
+    list.innerHTML=items.map(x=>{
+      const vn=x.verify?`<div class="verify-note">⚑ ${this.esc(this.ui.verifyNote)}</div>`:'';
+      return `<div class="card"><div class="card-head" onclick="this.parentNode.classList.toggle('open')">
+        <div class="qa-q">${this.esc(x.q[this.lang])}</div><div class="chev">▶</div></div>
+        <div class="card-body"><div class="card-body-inner">${this.esc(x.a[this.lang])}${vn}</div></div></div>`;
+    }).join('');
+  },
+
+  // ===== RULES =====
+  vRules(){
+    const r=this.content.rules.rules, v=document.getElementById('view');
+    v.innerHTML=`<div class="view">
+      <div class="eyebrow">Birdie</div>
+      <h2 class="view-title">${this.esc(this.ui.rulesTitle)}</h2>
+      <div>${r.map((x,i)=>{
+        const d=x[this.lang];
+        return `<div class="card"><div class="card-head" onclick="this.parentNode.classList.toggle('open')">
+          <div><div class="term-main"><span class="rule-num">${i+1}</span>${this.esc(d.t)}</div></div>
+          <div class="chev">▶</div></div>
+          <div class="card-body"><div class="card-body-inner">${this.esc(d.d)}</div></div></div>`;
+      }).join('')}</div>
+      ${this.hubHtml()}
+    </div>`;
+  },
+
+  hubHtml(){
+    const hub=this.manifest.hubUrl + (this.manifest.hubUrl.includes('?')?'&':'?') + 'lang=' + this.lang;
+    return `<div class="hub"><h3>${this.esc(this.ui.hubTitle)}</h3><p>${this.esc(this.ui.hubText)}</p>
+      <a href="${hub}" target="_blank" rel="noopener">${this.esc(this.ui.hubBtn)}</a></div>`;
+  },
+
+  // ===== helpers =====
+  async get(path){ const r=await fetch(path,{cache:'no-cache'}); if(!r.ok) throw new Error(path); return r.json(); },
+  store(op,k,val){ try{ if(op==='get') return localStorage.getItem('birdie_'+k); if(op==='set') localStorage.setItem('birdie_'+k,val);}catch(e){return null;} }
+};
+
+App.boot();
+
+if('serviceWorker' in navigator){ window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{})); }
+</script>
+</body>
+</html>

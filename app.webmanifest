@@ -1,0 +1,14 @@
+{
+  "name": "Birdie — golf lesson",
+  "short_name": "Birdie",
+  "description": "Урок гольфа на твоём языке: термины, удары, вопросы.",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0E3B2E",
+  "theme_color": "#0E3B2E",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

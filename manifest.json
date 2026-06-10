@@ -1,0 +1,21 @@
+{
+  "app": "birdie",
+  "name": "Birdie",
+  "version": "1.0-v1",
+  "updated": "2026-06-10",
+  "hubUrl": "https://ikartuzov-hub.github.io/seedwave-catalog/hub/",
+  "defaultLang": "ru",
+  "todaySession": 13,
+  "langs": [
+    { "code": "ru", "name": "Русский",    "flag": "🇷🇺", "dir": "ltr", "ui": "ui/ui.ru.json", "live": true },
+    { "code": "pt", "name": "Português",  "flag": "🇵🇹", "dir": "ltr", "ui": "ui/ui.pt.json", "live": true },
+    { "code": "en", "name": "English",    "flag": "🇬🇧", "dir": "ltr", "ui": "ui/ui.en.json", "live": true }
+  ],
+  "content": {
+    "glossary": "content/glossary.json",
+    "shots": "content/shots.json",
+    "qa": "content/qa.json",
+    "sessions": "content/sessions.json",
+    "rules": "content/rules.json"
+  }
+}

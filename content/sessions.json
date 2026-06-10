@@ -1,0 +1,50 @@
+{
+  "file": "sessions",
+  "version": "1.0-v1",
+  "updated": "2026-06-10",
+  "langs": ["ru", "pt", "en"],
+  "note": "19 сессий курса FPG. shots/terms/qa — ссылки на id из других файлов (движок связывает). Сессия 13 готова к уроку 13.06. Сессии без title — каркас, заполнить с программы FPG (status:draft).",
+  "course": {
+    "name": "Portugal Golf 9 semanas e 1/2",
+    "club": "Palheiro Golf, Madeira",
+    "federation": "FPG",
+    "total": 19,
+    "final": { "n": 19, "date": "2026-07-05", "title": "Jogo Formal | Torneio Final" }
+  },
+  "sessions": [
+    { "n": 1, "date": "", "status": "draft", "verify": true, "title": { "ru": "", "pt": "", "en": "" }, "shots": [], "terms": [], "qa": [] },
+    { "n": 2, "date": "", "status": "draft", "verify": true, "title": { "ru": "", "pt": "", "en": "" }, "shots": [], "terms": [], "qa": [] },
+    { "n": 3, "date": "", "status": "draft", "verify": true, "title": { "ru": "", "pt": "", "en": "" }, "shots": [], "terms": [], "qa": [] },
+    { "n": 4, "date": "", "status": "draft", "verify": true, "title": { "ru": "", "pt": "", "en": "" }, "shots": [], "terms": [], "qa": [] },
+    { "n": 5, "date": "", "status": "draft", "verify": true, "title": { "ru": "", "pt": "", "en": "" }, "shots": [], "terms": [], "qa": [] },
+    { "n": 6, "date": "", "status": "draft", "verify": true, "title": { "ru": "", "pt": "", "en": "" }, "shots": [], "terms": [], "qa": [] },
+    { "n": 7, "date": "", "status": "draft", "verify": true, "title": { "ru": "", "pt": "", "en": "" }, "shots": [], "terms": [], "qa": [] },
+    { "n": 8, "date": "", "status": "draft", "verify": true, "title": { "ru": "", "pt": "", "en": "" }, "shots": [], "terms": [], "qa": [] },
+    { "n": 9, "date": "", "status": "draft", "verify": true, "title": { "ru": "", "pt": "", "en": "" }, "shots": [], "terms": [], "qa": [] },
+    { "n": 10, "date": "", "status": "draft", "verify": true, "title": { "ru": "", "pt": "", "en": "" }, "shots": [], "terms": [], "qa": [] },
+    { "n": 11, "date": "", "status": "draft", "verify": true, "title": { "ru": "", "pt": "", "en": "" }, "shots": [], "terms": [], "qa": [] },
+    { "n": 12, "date": "", "status": "draft", "verify": true, "title": { "ru": "", "pt": "", "en": "" }, "shots": [], "terms": [], "qa": [] },
+    {
+      "n": 13, "date": "2026-06-13", "status": "ready", "verify": true,
+      "title": { "ru": "Мяч в полёте", "pt": "Bola a voar", "en": "Ball in flight" },
+      "focus": {
+        "ru": "Сегодня про полёт мяча: почему летит высоко или низко, прямо или с изгибом, и как этим управлять. Полные удары драйвером и айроном, читаем траекторию.",
+        "pt": "Hoje é sobre o voo da bola: porque voa alto ou baixo, reta ou com curva, e como controlar isso. Pancadas completas com driver e ferro, ler a trajetória.",
+        "en": "Today is about ball flight: why it flies high or low, straight or curving, and how to control it. Full driver and iron shots, reading the trajectory."
+      },
+      "shots": ["drive", "ironshot"],
+      "terms": ["trajectory", "carry", "roll", "slice", "hook", "draw", "fade", "top", "loft", "swing", "impact", "tempo"],
+      "qa": ["q01", "q02", "q03", "q06", "q10"]
+    },
+    { "n": 14, "date": "", "status": "draft", "verify": true, "title": { "ru": "", "pt": "", "en": "" }, "shots": [], "terms": [], "qa": [] },
+    { "n": 15, "date": "", "status": "draft", "verify": true, "title": { "ru": "", "pt": "", "en": "" }, "shots": [], "terms": [], "qa": [] },
+    { "n": 16, "date": "", "status": "draft", "verify": true, "title": { "ru": "", "pt": "", "en": "" }, "shots": [], "terms": [], "qa": [] },
+    { "n": 17, "date": "", "status": "draft", "verify": true, "title": { "ru": "", "pt": "", "en": "" }, "shots": [], "terms": [], "qa": [] },
+    { "n": 18, "date": "", "status": "draft", "verify": true, "title": { "ru": "", "pt": "", "en": "" }, "shots": [], "terms": [], "qa": [] },
+    {
+      "n": 19, "date": "2026-07-05", "status": "draft", "verify": true,
+      "title": { "ru": "Финальный турнир", "pt": "Jogo Formal | Torneio Final", "en": "Final tournament" },
+      "shots": [], "terms": ["par", "birdie", "bogey", "handicap", "scorecard", "etiquette"], "qa": ["q24", "q25", "q26"]
+    }
+  ]
+}
