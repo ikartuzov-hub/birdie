@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Birdie</title>
+<style>
+  :root{
+    --bg:#0d1318; --ink:#eef3f6; --dim:#7d8c97;
+    --accent:#6fb3dc; --accent-ink:#0a1014;
+  }
+  :root[data-theme="light"]{
+    --bg:#eef5f9; --ink:#142028; --dim:#5f7382;
+    --accent:#2c7bb0; --accent-ink:#f4fafd;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    display:flex;flex-direction:column;min-height:100vh;min-height:100dvh;
+    transition:background .4s ease,color .4s ease;
+  }
+  .brandmark{position:fixed;top:13px;left:16px;width:24px;height:24px;z-index:10}
+  .topctrl{position:fixed;top:12px;right:14px;z-index:10;display:flex;align-items:center;gap:8px}
+  .themebtn{
+    background:none;border:1px solid transparent;color:var(--dim);
+    font-size:16px;line-height:1;padding:6px 9px;border-radius:999px;cursor:pointer;
+  }
+  .themebtn:active{transform:scale(.95)}
+  .langbar{display:flex;gap:6px}
+  .langbar button{
+    background:none;border:1px solid transparent;color:var(--dim);
+    font-size:12px;letter-spacing:.08em;padding:5px 8px;border-radius:999px;
+    cursor:pointer;text-transform:uppercase;
+  }
+  .langbar button.on{color:var(--accent);border-color:var(--accent)}
+
+  main{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:24px;text-align:center}
+  .step{display:none;flex-direction:column;align-items:center;gap:34px;max-width:560px;width:100%}
+  .step.on{display:flex}
+
+  .line{font-family:Georgia,"Times New Roman",serif;font-size:clamp(22px,5.5vw,32px);line-height:1.45;min-height:2.9em}
+  .phrase{font-family:Georgia,"Times New Roman",serif;font-size:clamp(30px,8vw,46px);line-height:1.3;color:var(--accent);min-height:1.3em}
+  .translation{font-size:clamp(16px,4vw,20px);color:var(--dim);min-height:1.4em}
+  .wowline{font-family:Georgia,serif;font-size:clamp(19px,4.6vw,26px);line-height:1.45;min-height:1.4em}
+
+  .btn{
+    font-family:inherit;font-size:17px;letter-spacing:.02em;
+    padding:15px 38px;border-radius:999px;cursor:pointer;
+    border:1px solid var(--accent);background:none;color:var(--accent);
+    transition:background .25s,color .25s;will-change:transform;
+  }
+  .btn:hover{background:var(--accent);color:var(--accent-ink)}
+  .btn:active{transform:scale(.97)}
+  .btn.primary{background:var(--accent);color:var(--accent-ink);font-weight:600}
+  .btn.ghost{border-color:transparent;color:var(--dim);font-size:15px;padding:10px 20px}
+  .btn.ghost:hover{background:none;color:var(--ink)}
+  .btn.hidden{visibility:hidden;pointer-events:none}
+
+  .cta-col{display:flex;flex-direction:column;gap:14px;align-items:center}
+  footer{padding:18px;text-align:center;font-size:12px;color:var(--dim);display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+  footer a{color:var(--dim);text-decoration:none;border-bottom:1px solid rgba(141,127,112,.4)}
+</style>
+</head>
+<body>
+
+<svg class="brandmark" viewBox="0 0 100 100" fill="none" stroke="var(--accent)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" aria-label="Birdie"><path d="M33 16 L33 72"/><path d="M33 16 C57 16 57 42 35 43 C59 44 59 72 33 72"/><path d="M20 86 Q30 80 40 86 Q50 92 60 86 Q70 80 80 86"/></svg>
+<div class="topctrl">
+  <button id="themeBtn" class="themebtn" aria-label="Сменить тему">☀</button>
+  <nav class="langbar" id="langbar" aria-label="Language"></nav>
+</div>
+
+<main>
+  <section class="step on" id="s1">
+    <p class="line" id="hook" aria-live="polite"></p>
+    <button class="btn hidden" id="btnYes"></button>
+  </section>
+  <section class="step" id="s2">
+    <p class="phrase" id="phrase"></p>
+    <button class="btn primary hidden" id="btnListen"></button>
+    <p class="translation" id="translation"></p>
+    <p class="wowline" id="wow"></p>
+    <button class="btn hidden" id="btnNext"></button>
+  </section>
+  <section class="step" id="s3">
+    <p class="line" id="pitch"></p>
+    <div class="cta-col">
+      <button class="btn primary hidden" id="btnTry"></button>
+      <button class="btn ghost hidden" id="btnMore"></button>
+    </div>
+  </section>
+</main>
+
+<footer>
+  © <a id="authorLink" href="#" target="_blank" rel="noopener">Igor Kartuzov</a>
+  <span> · </span>
+  <a id="hubLink" href="#" target="_blank" rel="noopener">SeedWave</a>
+  <span> · </span>
+  <span style="opacity:.55">birdie v4</span>
+</footer>
+
+<script>
+/* ===== РЕЕСТР ===== */
+const APP_URL    = "./";   // приложение Birdie — УТОЧНИТЬ
+const MORE_URL   = "./";   // подробная страница Birdie — УТОЧНИТЬ
+const HUB_URL    = "https://ikartuzov-hub.github.io/seedwave-catalog/hub/";
+const AUTHOR_URL = "https://www.linkedin.com/in/igor-kartuzov/";
+
+/* ===== ЛОКАЛИ + КОНТЕНТ ===== */
+const LOCALES = {
+  ru:{dir:"ltr",ui:{
+    hook:"Урок гольфа на португальском — а ты не говоришь по-португальски?",
+    yes:"Да, это про меня", listen:"🔊 Послушать", again:"🔊 Ещё раз",
+    wow:"Так звучит твой урок. Birdie переводит его на твой язык.",
+    next:"Дальше",
+    pitch:"Birdie — ассистент гольф-урока. Термины, удары, вопросы тренеру — на твоём языке. 5 языков, один урок для всех.",
+    tryIt:"Открыть Birdie", more:"Узнать больше"},
+    phrase:{text:"Bola a voar!",translation:"«Мяч в полёте!»",voice:"pt-PT"}},
+  en:{dir:"ltr",ui:{
+    hook:"Golf lesson in Portuguese — and you don't speak Portuguese?",
+    yes:"Yes, that's me", listen:"🔊 Listen", again:"🔊 Once more",
+    wow:"That's how your lesson sounds. Birdie translates it into your language.",
+    next:"Next",
+    pitch:"Birdie is your golf-lesson assistant. Terms, shots, questions to the coach — in your language. 5 languages, one lesson for everyone.",
+    tryIt:"Open Birdie", more:"Learn more"},
+    phrase:{text:"Bola a voar!",translation:"\u201CBall in flight!\u201D",voice:"pt-PT"}},
+  pt:{dir:"ltr",ui:{
+    hook:"Dás aulas de golfe a alunos estrangeiros?",
+    yes:"Sim, dou", listen:"🔊 Ouvir", again:"🔊 Outra vez",
+    wow:"É assim que o teu aluno te ouve — na língua dele. O Birdie traduz a aula.",
+    next:"Continuar",
+    pitch:"Birdie é o assistente da aula de golfe. Termos, pancadas, perguntas — em 5 línguas. Uma aula para todos.",
+    tryIt:"Abrir o Birdie", more:"Saber mais"},
+    phrase:{text:"Мяч в полёте!",translation:"«Bola a voar!»",voice:"ru-RU"}},
+  es:{dir:"ltr",ui:{
+    hook:"¿Clase de golf en portugués — y no hablas portugués?",
+    yes:"Sí, soy yo", listen:"🔊 Escuchar", again:"🔊 Otra vez",
+    wow:"Así suena tu clase. Birdie la traduce a tu idioma.",
+    next:"Siguiente",
+    pitch:"Birdie es tu asistente de clase de golf. Términos, golpes, preguntas al entrenador — en tu idioma. 5 idiomas, una clase para todos.",
+    tryIt:"Abrir Birdie", more:"Saber más"},
+    phrase:{text:"Bola a voar!",translation:"«¡Pelota en vuelo!»",voice:"pt-PT"}},
+  de:{dir:"ltr",ui:{
+    hook:"Golfstunde auf Portugiesisch — und du sprichst kein Portugiesisch?",
+    yes:"Ja, genau ich", listen:"🔊 Anhören", again:"🔊 Noch einmal",
+    wow:"So klingt deine Golfstunde. Birdie übersetzt sie in deine Sprache.",
+    next:"Weiter",
+    pitch:"Birdie ist dein Assistent für die Golfstunde. Begriffe, Schläge, Fragen an den Trainer — in deiner Sprache. 5 Sprachen, eine Stunde für alle.",
+    tryIt:"Birdie öffnen", more:"Mehr erfahren"},
+    phrase:{text:"Bola a voar!",translation:"\u201EBall im Flug!\u201C",voice:"pt-PT"}}
+};
+
+/* ===== ДВИЖОК ===== */
+const params=new URLSearchParams(location.search);
+let lang=params.get("lang");
+if(!LOCALES[lang]){const nav=(navigator.language||"ru").slice(0,2).toLowerCase();lang=LOCALES[nav]?nav:"ru";}
+let L=LOCALES[lang];
+const $=id=>document.getElementById(id);
+let theme=params.get("theme")==="light"?"light":"dark";
+const withNav=u=>u+(u.includes("?")?"&":"?")+"lang="+lang+"&theme="+theme;
+
+function buildLangbar(){
+  const bar=$("langbar");bar.innerHTML="";
+  Object.keys(LOCALES).forEach(code=>{
+    const b=document.createElement("button");
+    b.textContent=code;
+    if(code===lang)b.classList.add("on");
+    b.onclick=function(){const u=new URL(location.href);u.searchParams.set("lang",code);u.searchParams.set("theme",theme);location.href=u.toString();};
+    bar.appendChild(b);
+  });
+}
+function applyLocale(){
+  document.documentElement.lang=lang;
+  document.documentElement.dir=L.dir||"ltr";
+  $("btnYes").textContent=L.ui.yes;
+  $("btnListen").textContent=L.ui.listen;
+  $("btnNext").textContent=L.ui.next;
+  $("btnTry").textContent=L.ui.tryIt;
+  $("btnMore").textContent=L.ui.more;
+  $("translation").textContent="";
+  $("authorLink").href=AUTHOR_URL;
+  $("hubLink").href=withNav(HUB_URL);
+}
+
+/* ---- ПЕЧАТЬ через requestAnimationFrame (iOS-устойчиво) ---- */
+const CPS=22;           // символов в секунду
+function typeLine(el,text,done){
+  el.textContent="";
+  let shown=0,start=null,finished=false;
+  function finish(){
+    if(finished)return;finished=true;
+    el.textContent=text;
+    setTimeout(function(){ if(done)done(); },300);
+  }
+  function frame(ts){
+    if(start===null)start=ts;
+    const should=Math.floor((ts-start)/1000*CPS);
+    if(should!==shown){
+      shown=Math.min(should,text.length);
+      el.textContent=text.slice(0,shown)+(shown<text.length?"▎":"");
+    }
+    if(shown<text.length){ requestAnimationFrame(frame); }
+    else { finish(); }
+  }
+  requestAnimationFrame(frame);
+  // подстраховка: если кадры не идут вообще — показать через 3.5с
+  setTimeout(finish,3500);
+}
+
+/* ---- ПУЛЬСАЦИЯ через requestAnimationFrame (iOS-устойчиво) ---- */
+const pulsing=new Set();
+function pulseOn(id){ pulsing.add(id); }
+function pulseOff(id){ pulsing.delete(id); const e=$(id); if(e)e.style.transform=""; }
+function pulseLoop(ts){
+  const s=1+0.07*(0.5+0.5*Math.sin(ts/230));   // 1.00 .. 1.07, период ~1.4с
+  pulsing.forEach(function(id){ const e=$(id); if(e)e.style.transform="scale("+s.toFixed(4)+")"; });
+  requestAnimationFrame(pulseLoop);
+}
+requestAnimationFrame(pulseLoop);
+
+function callBtn(id){ $(id).classList.remove("hidden"); pulseOn(id); }
+function show(stepId){ document.querySelectorAll(".step").forEach(function(s){s.classList.remove("on");}); $(stepId).classList.add("on"); }
+
+/* === ШАГИ === */
+function enterS1(){
+  show("s1");
+  $("btnYes").classList.add("hidden");pulseOff("btnYes");
+  typeLine($("hook"),L.ui.hook,function(){callBtn("btnYes");});
+}
+let revealed=false;
+function enterS2(){
+  show("s2");revealed=false;
+  ["btnListen","btnNext"].forEach(function(id){$(id).classList.add("hidden");pulseOff(id);});
+  $("translation").textContent="";$("wow").textContent="";
+  $("btnListen").textContent=L.ui.listen;
+  typeLine($("phrase"),L.phrase.text,function(){callBtn("btnListen");});
+}
+function speak(){
+  try{
+    const u=new SpeechSynthesisUtterance(L.phrase.text);
+    u.lang=L.phrase.voice;u.rate=0.88;
+    const vs=speechSynthesis.getVoices();
+    const tgt=L.phrase.voice.toLowerCase().replace("_","-");
+    const v=vs.find(function(v){return v.lang&&v.lang.toLowerCase().replace("_","-")===tgt;})
+         || vs.find(function(v){return v.lang&&v.lang.toLowerCase().replace("_","-").indexOf(tgt)===0&&/\bPT\b/i.test(v.name||"");})
+         || vs.find(function(v){return v.lang&&v.lang.toLowerCase().indexOf(tgt.slice(0,2))===0;});
+    if(v)u.voice=v;
+    u.onend=reveal;
+    speechSynthesis.cancel();speechSynthesis.speak(u);
+  }catch(e){}
+  setTimeout(reveal,3500);
+}
+function reveal(){
+  if(revealed)return;revealed=true;
+  $("btnListen").textContent=L.ui.again;pulseOff("btnListen");
+  $("translation").textContent=L.phrase.translation;
+  typeLine($("wow"),L.ui.wow,function(){callBtn("btnNext");});
+}
+function enterS3(){
+  show("s3");
+  ["btnTry","btnMore"].forEach(function(id){$(id).classList.add("hidden");pulseOff(id);});
+  typeLine($("pitch"),L.ui.pitch,function(){
+    callBtn("btnTry");
+    $("btnMore").classList.remove("hidden");
+  });
+}
+
+buildLangbar();applyLocale();
+
+/* ---- ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ (старт тёмная) ---- */
+function setTheme(t){
+  theme=t;
+  if(t==="light")document.documentElement.setAttribute("data-theme","light");
+  else document.documentElement.removeAttribute("data-theme");
+  $("themeBtn").textContent=(t==="light")?"☾":"☀";
+  $("hubLink").href=withNav(HUB_URL);
+}
+setTheme(theme);
+$("themeBtn").onclick=function(){ setTheme(theme==="dark"?"light":"dark"); };
+
+$("btnYes").onclick=enterS2;
+$("btnListen").onclick=speak;
+$("btnNext").onclick=enterS3;
+$("btnTry").onclick=function(){location.href=withNav(APP_URL);};
+$("btnMore").onclick=function(){location.href=withNav(MORE_URL);};
+enterS1();
+</script>
+</body>
+</html>
