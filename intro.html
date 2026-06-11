@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Treino</title>
+<title>Birdie</title>
 <style>
   :root{
-    --bg:#14100d; --ink:#f1e8dd; --dim:#8d7f70;
-    --accent:#c89b6d; --accent-ink:#1a140f;
+    --bg:#0d1318; --ink:#eef3f6; --dim:#7d8c97;
+    --accent:#6fb3dc; --accent-ink:#0a1014;
   }
   :root[data-theme="light"]{
-    --bg:#f7f0e4; --ink:#2a211a; --dim:#9c8a76;
-    --accent:#a86f33; --accent-ink:#fbf6ee;
+    --bg:#eef5f9; --ink:#142028; --dim:#5f7382;
+    --accent:#2c7bb0; --accent-ink:#f4fafd;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html,body{height:100%}
@@ -65,7 +65,7 @@
 </head>
 <body>
 
-<svg class="brandmark" viewBox="0 0 100 100" fill="none" stroke="var(--accent)" stroke-width="7.5" stroke-linecap="round" stroke-linejoin="round" aria-label="Treino"><path d="M18 32 Q31 19 43 31 Q50 38 57 31 Q69 19 82 32"/><path d="M50 33 V80"/></svg>
+<svg class="brandmark" viewBox="0 0 100 100" fill="none" stroke="var(--accent)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" aria-label="Birdie"><path d="M33 16 L33 72"/><path d="M33 16 C57 16 57 42 35 43 C59 44 59 72 33 72"/><path d="M20 86 Q30 80 40 86 Q50 92 60 86 Q70 80 80 86"/></svg>
 <div class="topctrl">
   <button id="themeBtn" class="themebtn" aria-label="Сменить тему">☀</button>
   <nav class="langbar" id="langbar" aria-label="Language"></nav>
@@ -97,58 +97,58 @@
   <span> · </span>
   <a id="hubLink" href="#" target="_blank" rel="noopener">SeedWave</a>
   <span> · </span>
-  <span style="opacity:.55">v9</span>
+  <span style="opacity:.55">birdie v4</span>
 </footer>
 
 <script>
 /* ===== РЕЕСТР ===== */
-const APP_URL    = "https://ikartuzov-hub.github.io/treino/u/";
-const MORE_URL   = "./";
+const APP_URL    = "./";   // приложение Birdie — УТОЧНИТЬ
+const MORE_URL   = "./";   // подробная страница Birdie — УТОЧНИТЬ
 const HUB_URL    = "https://ikartuzov-hub.github.io/seedwave-catalog/hub/";
 const AUTHOR_URL = "https://www.linkedin.com/in/igor-kartuzov/";
 
 /* ===== ЛОКАЛИ + КОНТЕНТ ===== */
 const LOCALES = {
   ru:{dir:"ltr",ui:{
-    hook:"Хочешь, скажу одну фразу — и ты поймёшь португальский?",
-    yes:"Да, давай", listen:"🔊 Послушать", again:"🔊 Ещё раз",
-    wow:"Ты только что понял португальский. Без словаря и без правил.",
+    hook:"Урок гольфа на португальском — а ты не говоришь по-португальски?",
+    yes:"Да, это про меня", listen:"🔊 Послушать", again:"🔊 Ещё раз",
+    wow:"Так звучит твой урок. Birdie переводит его на твой язык.",
     next:"Дальше",
-    pitch:"Так работает Treino. Фразы, которые понимаешь с первого раза, — и язык начинает звучать в тебе. 6 языковых пар.",
-    tryIt:"Попробовать бесплатно", more:"Узнать больше"},
-    phrase:{text:"Isto é fantástico!",translation:"«Это фантастично!»",voice:"pt-PT"}},
+    pitch:"Birdie — ассистент гольф-урока. Термины, удары, вопросы тренеру — на твоём языке. 5 языков, один урок для всех.",
+    tryIt:"Открыть Birdie", more:"Узнать больше"},
+    phrase:{text:"Bola a voar!",translation:"«Мяч в полёте!»",voice:"pt-PT"}},
   en:{dir:"ltr",ui:{
-    hook:"Want me to say one phrase — and you'll understand Portuguese?",
-    yes:"Yes, go on", listen:"🔊 Listen", again:"🔊 Once more",
-    wow:"You just understood Portuguese. No dictionary, no rules.",
+    hook:"Golf lesson in Portuguese — and you don't speak Portuguese?",
+    yes:"Yes, that's me", listen:"🔊 Listen", again:"🔊 Once more",
+    wow:"That's how your lesson sounds. Birdie translates it into your language.",
     next:"Next",
-    pitch:"That's how Treino works. Phrases you understand on first hearing — and the language starts to live in you. 6 language pairs.",
-    tryIt:"Try it free", more:"Learn more"},
-    phrase:{text:"Isto é fantástico!",translation:"\u201CThis is fantastic!\u201D",voice:"pt-PT"}},
+    pitch:"Birdie is your golf-lesson assistant. Terms, shots, questions to the coach — in your language. 5 languages, one lesson for everyone.",
+    tryIt:"Open Birdie", more:"Learn more"},
+    phrase:{text:"Bola a voar!",translation:"\u201CBall in flight!\u201D",voice:"pt-PT"}},
   pt:{dir:"ltr",ui:{
-    hook:"Queres ouvir uma frase — e entender russo?",
-    yes:"Sim, quero", listen:"🔊 Ouvir", again:"🔊 Outra vez",
-    wow:"Acabaste de entender russo. Sem dicionário, sem regras.",
+    hook:"Dás aulas de golfe a alunos estrangeiros?",
+    yes:"Sim, dou", listen:"🔊 Ouvir", again:"🔊 Outra vez",
+    wow:"É assim que o teu aluno te ouve — na língua dele. O Birdie traduz a aula.",
     next:"Continuar",
-    pitch:"É assim que o Treino funciona. Frases que entendes à primeira — e a língua começa a viver em ti. 6 pares de línguas.",
-    tryIt:"Experimentar grátis", more:"Saber mais"},
-    phrase:{text:"Это фантастика!",translation:"«Isto é fantástico!»",voice:"ru-RU"}},
+    pitch:"Birdie é o assistente da aula de golfe. Termos, pancadas, perguntas — em 5 línguas. Uma aula para todos.",
+    tryIt:"Abrir o Birdie", more:"Saber mais"},
+    phrase:{text:"Мяч в полёте!",translation:"«Bola a voar!»",voice:"ru-RU"}},
   es:{dir:"ltr",ui:{
-    hook:"¿Quieres que diga una frase — y entenderás portugués?",
-    yes:"Sí, adelante", listen:"🔊 Escuchar", again:"🔊 Otra vez",
-    wow:"Acabas de entender portugués. Sin diccionario, sin reglas.",
+    hook:"¿Clase de golf en portugués — y no hablas portugués?",
+    yes:"Sí, soy yo", listen:"🔊 Escuchar", again:"🔊 Otra vez",
+    wow:"Así suena tu clase. Birdie la traduce a tu idioma.",
     next:"Siguiente",
-    pitch:"Así funciona Treino. Frases que entiendes a la primera — y el idioma empieza a vivir en ti. 6 pares de idiomas.",
-    tryIt:"Probar gratis", more:"Saber más"},
-    phrase:{text:"Isto é fantástico!",translation:"«¡Esto es fantástico!»",voice:"pt-PT"}},
+    pitch:"Birdie es tu asistente de clase de golf. Términos, golpes, preguntas al entrenador — en tu idioma. 5 idiomas, una clase para todos.",
+    tryIt:"Abrir Birdie", more:"Saber más"},
+    phrase:{text:"Bola a voar!",translation:"«¡Pelota en vuelo!»",voice:"pt-PT"}},
   de:{dir:"ltr",ui:{
-    hook:"Soll ich einen Satz sagen — und du verstehst Portugiesisch?",
-    yes:"Ja, los", listen:"🔊 Anhören", again:"🔊 Noch einmal",
-    wow:"Du hast gerade Portugiesisch verstanden. Ohne Wörterbuch, ohne Regeln.",
+    hook:"Golfstunde auf Portugiesisch — und du sprichst kein Portugiesisch?",
+    yes:"Ja, genau ich", listen:"🔊 Anhören", again:"🔊 Noch einmal",
+    wow:"So klingt deine Golfstunde. Birdie übersetzt sie in deine Sprache.",
     next:"Weiter",
-    pitch:"So funktioniert Treino. Sätze, die du beim ersten Hören verstehst — und die Sprache beginnt in dir zu leben. 6 Sprachpaare.",
-    tryIt:"Kostenlos ausprobieren", more:"Mehr erfahren"},
-    phrase:{text:"Isto é fantástico!",translation:"\u201EDas ist fantastisch!\u201C",voice:"pt-PT"}}
+    pitch:"Birdie ist dein Assistent für die Golfstunde. Begriffe, Schläge, Fragen an den Trainer — in deiner Sprache. 5 Sprachen, eine Stunde für alle.",
+    tryIt:"Birdie öffnen", more:"Mehr erfahren"},
+    phrase:{text:"Bola a voar!",translation:"\u201EBall im Flug!\u201C",voice:"pt-PT"}}
 };
 
 /* ===== ДВИЖОК ===== */
@@ -156,8 +156,8 @@ const params=new URLSearchParams(location.search);
 let lang=params.get("lang");
 if(!LOCALES[lang]){const nav=(navigator.language||"ru").slice(0,2).toLowerCase();lang=LOCALES[nav]?nav:"ru";}
 let L=LOCALES[lang];
-let theme=params.get("theme")==="light"?"light":"dark";
 const $=id=>document.getElementById(id);
+let theme=params.get("theme")==="light"?"light":"dark";
 const withNav=u=>u+(u.includes("?")?"&":"?")+"lang="+lang+"&theme="+theme;
 
 function buildLangbar(){
@@ -268,7 +268,7 @@ function enterS3(){
 
 buildLangbar();applyLocale();
 
-/* ---- ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ (сквозной через ?theme=) ---- */
+/* ---- ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ (старт тёмная) ---- */
 function setTheme(t){
   theme=t;
   if(t==="light")document.documentElement.setAttribute("data-theme","light");
