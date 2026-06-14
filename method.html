@@ -5,49 +5,55 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Birdie — метод</title>
-<meta name="theme-color" content="#eef5fa">
+<meta name="theme-color" content="#0E3B2E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#eef5fa; --paper:#fbfdff; --ink:#13303d; --ink-soft:#4f6b78;
-    --sky:#6fb3dc; --sky-deep:#2b6f93; --green:#3a8a5f; --gold:#c2872e;
-    --line:#d4e3ee; --soft-shadow:0 18px 40px -22px rgba(19,48,61,.40);
+    --bg:#0E3B2E; --paper:#12493A; --ink:#F2E8CE; --ink-soft:#BFB089;
+    --accent:#F0C24A; --line:#1F6450; --shadow:0 18px 40px -22px rgba(0,0,0,.5);
+  }
+  :root[data-theme="light"]{
+    --bg:#F4ECD9; --paper:#FBF8EC; --ink:#14533F; --ink-soft:#5F7060;
+    --accent:#16614A; --line:#D8CBA8; --shadow:0 18px 40px -22px rgba(20,83,63,.25);
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{-webkit-text-size-adjust:100%}
-  body{background:var(--bg);color:var(--ink);font-family:"Hanken Grotesk",sans-serif;line-height:1.6;padding:0 18px 60px;
-    background-image:radial-gradient(circle at 12% 6%,rgba(111,179,220,.16),transparent 42%),radial-gradient(circle at 90% 2%,rgba(58,138,95,.10),transparent 40%);}
+  body{background:var(--bg);color:var(--ink);font-family:'Manrope',system-ui,sans-serif;line-height:1.6;padding:0 18px 60px;transition:background .4s,color .4s}
+  .brandmark{position:fixed;top:13px;left:16px;width:24px;height:24px;z-index:10}
+  .themebtn{position:fixed;top:12px;right:16px;z-index:10;background:none;border:1px solid transparent;color:var(--ink-soft);font-size:16px;padding:6px 9px;border-radius:999px;cursor:pointer}
   .wrap{max-width:640px;margin:0 auto}
-  .crumb{font-size:11.5px;letter-spacing:.04em;color:var(--ink-soft);padding:22px 2px 0}
-  .crumb a{color:var(--sky-deep);text-decoration:none}
-  .kick{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--sky-deep);margin:34px 0 10px}
-  h1{font-family:"Fraunces",serif;font-weight:600;font-size:30px;line-height:1.2;letter-spacing:-.01em;margin-bottom:16px}
-  .lede{font-size:17px;color:var(--ink);margin-bottom:8px}
-  .lede b{color:var(--sky-deep)}
-  h2{font-family:"Fraunces",serif;font-weight:600;font-size:13px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.06em;display:flex;align-items:baseline;gap:10px;margin:40px 0 16px}
-  h2 .n{font-size:12px;color:var(--gold);font-weight:700;font-family:"Hanken Grotesk"}
-  h3{font-family:"Fraunces",serif;font-weight:600;font-size:19px;color:var(--sky-deep);margin:0 0 6px}
-  p{margin-bottom:14px}
-  .card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin-bottom:14px;box-shadow:var(--soft-shadow)}
+  .crumb{font-size:11.5px;letter-spacing:.04em;color:var(--ink-soft);padding:46px 2px 0}
+  .crumb a{color:var(--accent);text-decoration:none}
+  .kick{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:30px 0 10px}
+  h1{font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:30px;line-height:1.2;margin-bottom:16px}
+  .lede{font-size:17px;margin-bottom:8px}
+  .lede b{color:var(--accent)}
+  h2{font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:13px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.06em;display:flex;align-items:baseline;gap:10px;margin:40px 0 16px}
+  h2 .n{font-size:12px;color:var(--accent);font-weight:600}
+  h3{font-family:'Fraunces',Georgia,serif;font-weight:600;font-size:19px;color:var(--accent);margin:0 0 6px}
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin-bottom:14px;box-shadow:var(--shadow)}
   .card p{font-size:15px;color:var(--ink-soft);margin:0}
   .card p b{color:var(--ink)}
-  .note{border-left:3px solid var(--sky);background:rgba(111,179,220,.10);padding:13px 16px;border-radius:0 10px 10px 0;font-size:15px;color:var(--ink-soft);margin:18px 0}
-  .note b{color:var(--ink)}
-  .hub-cta{margin:36px 0 6px;padding:26px 22px;border-radius:18px;border:1px solid var(--line);background:linear-gradient(135deg,rgba(111,179,220,.16),rgba(58,138,95,.12));position:relative;overflow:hidden}
-  .hub-kicker{font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--sky-deep);margin-bottom:10px}
-  .hub-title{font-family:"Fraunces",serif;font-size:21px;line-height:1.3;color:var(--ink);margin-bottom:10px}
+  .note{border-left:3px solid var(--accent);background:rgba(240,194,74,.10);padding:13px 16px;border-radius:0 10px 10px 0;font-size:16px;color:var(--ink);margin:18px 0}
+  :root[data-theme="light"] .note{background:rgba(22,97,74,.08)}
+  .hub-cta{margin:36px 0 6px;padding:26px 22px;border-radius:18px;border:1px solid var(--line);background:var(--paper)}
+  .hub-kicker{font-size:10.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+  .hub-title{font-family:'Fraunces',Georgia,serif;font-size:21px;line-height:1.3;margin-bottom:10px}
   .hub-text{font-size:14.5px;color:var(--ink-soft);margin-bottom:16px}
-  .hub-btn{display:inline-block;background:var(--sky-deep);color:#fff;text-decoration:none;font-weight:600;font-size:15px;padding:12px 20px;border-radius:12px}
+  .hub-btn{display:inline-block;background:var(--accent);color:var(--bg);text-decoration:none;font-weight:600;font-size:15px;padding:12px 20px;border-radius:12px}
   .foot{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center;margin-top:40px;padding-top:20px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-soft)}
-  .foot a{color:var(--sky-deep);text-decoration:none;font-weight:600}
+  .foot a{color:var(--accent);text-decoration:none;font-weight:500}
   .reveal{opacity:0;transform:translateY(12px);animation:rise .6s ease forwards}
   @keyframes rise{to{opacity:1;transform:none}}
+  @media(prefers-reduced-motion:reduce){.reveal{animation:none;opacity:1;transform:none}}
   @media(max-width:430px){h1{font-size:26px}}
 </style>
 </head>
 <body>
+<svg class="brandmark" viewBox="0 0 100 100" fill="none" stroke="var(--accent)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" aria-label="Birdie"><path d="M33 16 L33 72"/><path d="M33 16 C57 16 57 42 35 43 C59 44 59 72 33 72"/><path d="M20 86 Q30 80 40 86 Q50 92 60 86 Q70 80 80 86"/></svg>
+<button id="themeBtn" class="themebtn" aria-label="Сменить тему">☀</button>
 <div class="wrap" id="app"></div>
 <script>
 (function(){
@@ -105,11 +111,9 @@
   const withLang = u => u + (u.includes("?")?"&":"?") + "lang=" + lang;
   const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
   document.documentElement.lang = lang;
-
-  const blocks = t.blocks.map((b,i)=>`
+  const blocks = t.blocks.map(b=>`
     <h2 class="reveal"><span class="n">${b.n}</span>${esc(b.h)}</h2>
     <div class="card reveal"><p>${b.p}</p></div>`).join("");
-
   document.getElementById("app").innerHTML = `
     <div class="crumb reveal"><a href="${esc(withLang(APP))}">${esc(t.crumb)}</a></div>
     <div class="kick reveal">${esc(t.kick)}</div>
@@ -127,6 +131,12 @@
       <a href="${esc(withLang(APP))}">${esc(t.footApp)}</a>
       <span>© 2026 <a href="${esc(withLang(HUB))}">SeedWave</a> · <a href="${LINKEDIN}" target="_blank" rel="noopener">${esc(t.footName)}</a></span>
     </div>`;
+  // тема день/ночь
+  const root=document.documentElement, tb=document.getElementById("themeBtn");
+  function setTheme(x){ if(x==="light"){root.setAttribute("data-theme","light");tb.textContent="☾";} else {root.removeAttribute("data-theme");tb.textContent="☀";} }
+  let saved; try{saved=localStorage.getItem("birdie_theme");}catch(e){}
+  setTheme(saved|| (qs.get("theme")) || (window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"));
+  tb.onclick=function(){ const now=root.getAttribute("data-theme")==="light"?"dark":"light"; setTheme(now); try{localStorage.setItem("birdie_theme",now);}catch(e){} };
 })();
 </script>
 </body>
