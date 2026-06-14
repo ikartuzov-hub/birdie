@@ -1,0 +1,133 @@
+<!-- Birdie © 2026 Igor Kartuzov · SeedWave. Метод открыт; перепубликация приложения как продукта без разрешения автора не допускается. -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Birdie — метод</title>
+<meta name="theme-color" content="#eef5fa">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#eef5fa; --paper:#fbfdff; --ink:#13303d; --ink-soft:#4f6b78;
+    --sky:#6fb3dc; --sky-deep:#2b6f93; --green:#3a8a5f; --gold:#c2872e;
+    --line:#d4e3ee; --soft-shadow:0 18px 40px -22px rgba(19,48,61,.40);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{background:var(--bg);color:var(--ink);font-family:"Hanken Grotesk",sans-serif;line-height:1.6;padding:0 18px 60px;
+    background-image:radial-gradient(circle at 12% 6%,rgba(111,179,220,.16),transparent 42%),radial-gradient(circle at 90% 2%,rgba(58,138,95,.10),transparent 40%);}
+  .wrap{max-width:640px;margin:0 auto}
+  .crumb{font-size:11.5px;letter-spacing:.04em;color:var(--ink-soft);padding:22px 2px 0}
+  .crumb a{color:var(--sky-deep);text-decoration:none}
+  .kick{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--sky-deep);margin:34px 0 10px}
+  h1{font-family:"Fraunces",serif;font-weight:600;font-size:30px;line-height:1.2;letter-spacing:-.01em;margin-bottom:16px}
+  .lede{font-size:17px;color:var(--ink);margin-bottom:8px}
+  .lede b{color:var(--sky-deep)}
+  h2{font-family:"Fraunces",serif;font-weight:600;font-size:13px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.06em;display:flex;align-items:baseline;gap:10px;margin:40px 0 16px}
+  h2 .n{font-size:12px;color:var(--gold);font-weight:700;font-family:"Hanken Grotesk"}
+  h3{font-family:"Fraunces",serif;font-weight:600;font-size:19px;color:var(--sky-deep);margin:0 0 6px}
+  p{margin-bottom:14px}
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin-bottom:14px;box-shadow:var(--soft-shadow)}
+  .card p{font-size:15px;color:var(--ink-soft);margin:0}
+  .card p b{color:var(--ink)}
+  .note{border-left:3px solid var(--sky);background:rgba(111,179,220,.10);padding:13px 16px;border-radius:0 10px 10px 0;font-size:15px;color:var(--ink-soft);margin:18px 0}
+  .note b{color:var(--ink)}
+  .hub-cta{margin:36px 0 6px;padding:26px 22px;border-radius:18px;border:1px solid var(--line);background:linear-gradient(135deg,rgba(111,179,220,.16),rgba(58,138,95,.12));position:relative;overflow:hidden}
+  .hub-kicker{font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--sky-deep);margin-bottom:10px}
+  .hub-title{font-family:"Fraunces",serif;font-size:21px;line-height:1.3;color:var(--ink);margin-bottom:10px}
+  .hub-text{font-size:14.5px;color:var(--ink-soft);margin-bottom:16px}
+  .hub-btn{display:inline-block;background:var(--sky-deep);color:#fff;text-decoration:none;font-weight:600;font-size:15px;padding:12px 20px;border-radius:12px}
+  .foot{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center;margin-top:40px;padding-top:20px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-soft)}
+  .foot a{color:var(--sky-deep);text-decoration:none;font-weight:600}
+  .reveal{opacity:0;transform:translateY(12px);animation:rise .6s ease forwards}
+  @keyframes rise{to{opacity:1;transform:none}}
+  @media(max-width:430px){h1{font-size:26px}}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<script>
+(function(){
+  const HUB = "https://ikartuzov-hub.github.io/seedwave-catalog/hub/";
+  const LINKEDIN = "https://www.linkedin.com/in/igor-kartuzov/";
+  const APP = "./";
+  const qs = new URLSearchParams(location.search);
+  let lang = (qs.get("lang") || (navigator.language||"en").slice(0,2)).toLowerCase();
+  const L = {
+    ru:{
+      crumb:"← Birdie", kick:"Метод Birdie", title:"Запомнить язык поля так, как он рождается",
+      lede:"Birdie — не разговорник. За ним метод: язык гольфа закрепляется так, как он реально возникает — в движении, на ударе, в вопросе группе. Четыре опоры.",
+      blocks:[
+        {n:"01", h:"Механика памяти", p:"Термины не зубрятся списком. Каждый закрепляется привязанным к моменту, когда он возник на поле — к удару, к ситуации, к вопросу группе. Интервальное повторение по методу Лейтнера (как в Treino) возвращает термин ровно тогда, когда мозг готов его забыть. <b>Память строится из живых моментов, а не из словаря.</b>"},
+        {n:"02", h:"Самонаполняющаяся база", p:"Вопрос ученика и ответ тренера не исчезают после урока — они остаются в общем банке знаний курса. Следующая группа стартует с опытом всех предыдущих. <b>Чем больше уроков проведено, тем умнее Birdie</b> — база растёт сама, без отдельного редактора контента."},
+        {n:"03", h:"Эксперт выверяет", p:"Технику ударов и португальские термины выверяет инструктор поля — это не машинный перевод и не любительская догадка. Выверенное помечено флажком доверия. <b>Инструктор — эксперт-проверяющий, а не соавтор:</b> метод и продукт авторские, экспертиза прикладная."},
+        {n:"04", h:"Трёхслойный движок", p:"Birdie стоит на том же стандарте, что Treino: движок / локали / контент. Новый язык — это новый словарь, а не новое приложение. Поэтому вся мультиязычная группа открывает один продукт, каждый — на родном."}
+      ],
+      note:"Ткань занятия одна — язык у каждого свой.",
+      hubKick:"Это часть SeedWave", hubTitle:"Один метод — много продуктов",
+      hubText:"Birdie и Treino собраны на одном переиспользуемом стандарте. Посмотри всю экосистему в Хабе.",
+      hubBtn:"Открыть Хаб →", footApp:"← Birdie", footName:"Игорь Картузов"
+    },
+    en:{
+      crumb:"← Birdie", kick:"The Birdie method", title:"Learn the language of the course the way it's born",
+      lede:"Birdie isn't a phrasebook. There's a method behind it: the language of golf sticks the way it actually arises — in motion, on a shot, in a question to the group. Four pillars.",
+      blocks:[
+        {n:"01", h:"Memory mechanics", p:"Terms aren't memorized from a list. Each one sticks tied to the moment it appeared on the course — a shot, a situation, a group question. Spaced repetition (Leitner, as in Treino) brings the term back exactly when the brain is about to forget it. <b>Memory is built from live moments, not a glossary.</b>"},
+        {n:"02", h:"A self-filling base", p:"A student's question and the coach's answer don't vanish after the lesson — they stay in the course's shared knowledge bank. The next group starts with the experience of all the previous ones. <b>The more lessons held, the smarter Birdie gets</b> — the base grows on its own, with no separate content editor."},
+        {n:"03", h:"An expert verifies", p:"Shot technique and Portuguese terms are verified by a course instructor — not machine translation, not an amateur guess. Verified items carry a trust mark. <b>The instructor is an expert reviewer, not a co-author:</b> the method and product are the author's, the expertise is applied."},
+        {n:"04", h:"A three-layer engine", p:"Birdie runs on the same standard as Treino: engine / locales / content. A new language is a new dictionary, not a new app. So the whole multilingual group opens one product — each in their own tongue."}
+      ],
+      note:"The lesson is shared — the language is each one's own.",
+      hubKick:"Part of SeedWave", hubTitle:"One method — many products",
+      hubText:"Birdie and Treino are built on one reusable standard. See the whole ecosystem in the Hub.",
+      hubBtn:"Open the Hub →", footApp:"← Birdie", footName:"Igor Kartuzov"
+    },
+    pt:{
+      crumb:"← Birdie", kick:"O método Birdie", title:"Aprender a língua do campo como ela nasce",
+      lede:"O Birdie não é um livro de frases. Há um método por trás: a língua do golfe fixa-se como realmente surge — em movimento, numa pancada, numa pergunta ao grupo. Quatro pilares.",
+      blocks:[
+        {n:"01", h:"Mecânica da memória", p:"Os termos não se decoram de uma lista. Cada um fixa-se ligado ao momento em que surgiu no campo — uma pancada, uma situação, uma pergunta do grupo. A repetição espaçada (Leitner, como no Treino) traz o termo de volta exatamente quando o cérebro está prestes a esquecê-lo. <b>A memória constrói-se a partir de momentos vivos, não de um glossário.</b>"},
+        {n:"02", h:"Uma base que se preenche", p:"A pergunta do aluno e a resposta do treinador não desaparecem depois da aula — ficam no banco comum de conhecimento do curso. A turma seguinte começa com a experiência de todas as anteriores. <b>Quantas mais aulas dadas, mais inteligente o Birdie fica</b> — a base cresce sozinha, sem um editor de conteúdo à parte."},
+        {n:"03", h:"Um especialista verifica", p:"A técnica das pancadas e os termos em português são verificados por um instrutor do campo — não é tradução automática nem palpite de amador. O verificado tem um selo de confiança. <b>O instrutor é um revisor especialista, não um coautor:</b> o método e o produto são do autor, a perícia é aplicada."},
+        {n:"04", h:"Um motor de três camadas", p:"O Birdie corre sobre o mesmo padrão do Treino: motor / locais / conteúdo. Uma nova língua é um novo dicionário, não uma nova aplicação. Por isso todo o grupo multilingue abre um só produto — cada um na sua língua."}
+      ],
+      note:"O fio da aula é um só — a língua é a de cada um.",
+      hubKick:"Faz parte do SeedWave", hubTitle:"Um método — vários produtos",
+      hubText:"O Birdie e o Treino são construídos sobre um padrão reutilizável. Vê todo o ecossistema no Hub.",
+      hubBtn:"Abrir o Hub →", footApp:"← Birdie", footName:"Igor Kartuzov"
+    }
+  };
+  if(!L[lang]) lang = "en";
+  const t = L[lang];
+  const withLang = u => u + (u.includes("?")?"&":"?") + "lang=" + lang;
+  const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  document.documentElement.lang = lang;
+
+  const blocks = t.blocks.map((b,i)=>`
+    <h2 class="reveal"><span class="n">${b.n}</span>${esc(b.h)}</h2>
+    <div class="card reveal"><p>${b.p}</p></div>`).join("");
+
+  document.getElementById("app").innerHTML = `
+    <div class="crumb reveal"><a href="${esc(withLang(APP))}">${esc(t.crumb)}</a></div>
+    <div class="kick reveal">${esc(t.kick)}</div>
+    <h1 class="reveal">${esc(t.title)}</h1>
+    <p class="lede reveal">${t.lede}</p>
+    ${blocks}
+    <div class="note reveal"><b>${esc(t.note)}</b></div>
+    <div class="hub-cta reveal">
+      <div class="hub-kicker">${esc(t.hubKick)}</div>
+      <div class="hub-title">${esc(t.hubTitle)}</div>
+      <div class="hub-text">${esc(t.hubText)}</div>
+      <a class="hub-btn" href="${esc(withLang(HUB))}">${esc(t.hubBtn)}</a>
+    </div>
+    <div class="foot reveal">
+      <a href="${esc(withLang(APP))}">${esc(t.footApp)}</a>
+      <span>© 2026 <a href="${esc(withLang(HUB))}">SeedWave</a> · <a href="${LINKEDIN}" target="_blank" rel="noopener">${esc(t.footName)}</a></span>
+    </div>`;
+})();
+</script>
+</body>
+</html>
