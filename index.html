@@ -27,6 +27,13 @@
     --shadow:0 8px 30px rgba(0,0,0,.30);
     --r:18px;
   }
+  :root[data-theme="light"]{
+    --fairway:#F4ECD9; --fairway-2:#FBF8EC; --fairway-3:#14533F12;
+    --sand:#E5D7B0; --sand-text:#14533F; --sand-dim:#6E7D66;
+    --gold:#16614A; --gold-deep:#16614A40;
+    --sky:#3E7A86; --ink:#14533F; --line:#D8CBA8;
+    --shadow:0 8px 30px rgba(20,83,63,.14);
+  }
   *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
   html,body{height:100%}
   body{
@@ -47,7 +54,7 @@
     padding:32px 24px;text-align:center;gap:8px;
     background:radial-gradient(120% 80% at 50% 0%, #155843 0%, var(--fairway) 60%);
   }
-  .bird-wrap{width:120px;height:96px;margin-bottom:8px}
+  .bird-wrap{width:96px;height:96px;margin-bottom:8px}
   .bird-path{fill:none;stroke:var(--gold);stroke-width:6;stroke-linecap:round;stroke-linejoin:round}
   .brand{font-size:clamp(44px,13vw,64px);font-weight:700;color:var(--sand-text);line-height:1}
   .tag{color:var(--gold);font-size:17px;font-weight:600;margin-bottom:28px}
@@ -71,7 +78,7 @@
     background:rgba(14,59,46,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);
   }
   .logo{display:flex;align-items:center;gap:9px;font-family:'Fraunces';font-weight:700;font-size:22px;color:var(--sand-text)}
-  .logo svg{width:30px;height:24px}
+  .logo svg{width:26px;height:26px}
   .logo .bird-path{stroke:var(--gold);stroke-width:7}
   .lang-switch{
     display:flex;align-items:center;gap:7px;padding:7px 13px;border-radius:999px;
@@ -172,8 +179,10 @@
 <!-- ===== Экран выбора языка ===== -->
 <div id="langScreen">
   <div class="bird-wrap">
-    <svg viewBox="0 0 120 96" class="bird-anim">
-      <path class="bird-path" d="M10 64 C 30 40, 46 36, 60 48 C 70 56, 80 56, 92 40 C 86 54, 78 64, 60 64 C 78 70, 96 72, 112 60 C 100 78, 80 86, 60 78 C 44 72, 24 74, 10 64 Z"/>
+    <svg viewBox="0 0 100 100" class="bird-anim">
+      <path class="bird-path" d="M33 16 L33 72"/>
+      <path class="bird-path" d="M33 16 C57 16 57 42 35 43 C59 44 59 72 33 72"/>
+      <path class="bird-path" d="M20 86 Q30 80 40 86 Q50 92 60 86 Q70 80 80 86"/>
     </svg>
   </div>
   <div class="brand">Birdie</div>
@@ -186,9 +195,10 @@
 <div id="app" class="hidden">
   <header>
     <div class="logo">
-      <svg viewBox="0 0 120 96"><path class="bird-path" d="M10 64 C 30 40, 46 36, 60 48 C 70 56, 80 56, 92 40 C 86 54, 78 64, 60 64 C 78 70, 96 72, 112 60 C 100 78, 80 86, 60 78 C 44 72, 24 74, 10 64 Z"/></svg>
+      <svg viewBox="0 0 100 100"><path class="bird-path" d="M33 16 L33 72"/><path class="bird-path" d="M33 16 C57 16 57 42 35 43 C59 44 59 72 33 72"/><path class="bird-path" d="M20 86 Q30 80 40 86 Q50 92 60 86 Q70 80 80 86"/></svg>
       Birdie
     </div>
+    <button class="lang-switch" id="themeBtn" onclick="App.toggleTheme()" aria-label="Тема">☀</button>
     <button class="lang-switch" id="langSwitch" onclick="App.toggleLang()"><span id="curFlag">🇷🇺</span><span id="curCode">RU</span> ▾</button>
   </header>
   <main id="view"></main>
@@ -206,8 +216,22 @@ const App = {
     const url = new URLSearchParams(location.search).get('lang');
     const saved = this.store('get','lang');
     const chosen = [url, saved].find(c => c && this.manifest.langs.some(l=>l.code===c));
+    // тема день/ночь
+    const urlTheme = new URLSearchParams(location.search).get('theme');
+    const savedTheme = this.store('get','theme');
+    this.applyTheme(savedTheme || urlTheme || ((window.matchMedia && matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark'));
     this.renderLangScreen();
     if(chosen){ this.start(chosen); }
+  },
+
+  applyTheme(x){
+    const r=document.documentElement;
+    if(x==='light'){ r.setAttribute('data-theme','light'); } else { r.removeAttribute('data-theme'); }
+    const b=document.getElementById('themeBtn'); if(b) b.textContent = (x==='light') ? '☾' : '☀';
+  },
+  toggleTheme(){
+    const cur = document.documentElement.getAttribute('data-theme')==='light' ? 'dark' : 'light';
+    this.applyTheme(cur); this.store('set','theme',cur);
   },
 
   renderLangScreen(){
