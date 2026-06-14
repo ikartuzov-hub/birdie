@@ -172,24 +172,17 @@
   .empty{color:var(--sand-dim);text-align:center;padding:40px 20px;font-size:15px}
 
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+  .topctrl{display:flex;align-items:center;gap:8px}
+  .themebtn{background:none;border:1px solid transparent;color:var(--sand-dim);font-size:16px;line-height:1;padding:6px 9px;border-radius:999px;cursor:pointer}
+  .themebtn:active{transform:scale(.95)}
+  .langbar{display:flex;gap:4px}
+  .langbar button{background:none;border:1px solid transparent;color:var(--sand-dim);font-size:12px;letter-spacing:.06em;padding:5px 8px;border-radius:999px;cursor:pointer;text-transform:uppercase}
+  .langbar button.on{color:var(--gold);border-color:var(--gold)}
+  .appfoot{padding:22px 18px 128px;text-align:center;font-size:12px;color:var(--sand-dim)}
+  .appfoot a{color:var(--sand-dim);text-decoration:none;border-bottom:1px solid var(--line)}
 </style>
 </head>
 <body>
-
-<!-- ===== Экран выбора языка ===== -->
-<div id="langScreen">
-  <div class="bird-wrap">
-    <svg viewBox="0 0 100 100" class="bird-anim">
-      <path class="bird-path" d="M33 16 L33 72"/>
-      <path class="bird-path" d="M33 16 C57 16 57 42 35 43 C59 44 59 72 33 72"/>
-      <path class="bird-path" d="M20 86 Q30 80 40 86 Q50 92 60 86 Q70 80 80 86"/>
-    </svg>
-  </div>
-  <div class="brand">Birdie</div>
-  <div class="tag" id="ls-tag">Урок гольфа — на твоём языке</div>
-  <div class="pick-sub" id="ls-sub">Урок, термины и ответы тренера — на нём</div>
-  <div class="lang-list" id="langList"></div>
-</div>
 
 <!-- ===== App ===== -->
 <div id="app" class="hidden">
@@ -198,11 +191,16 @@
       <svg viewBox="0 0 100 100"><path class="bird-path" d="M33 16 L33 72"/><path class="bird-path" d="M33 16 C57 16 57 42 35 43 C59 44 59 72 33 72"/><path class="bird-path" d="M20 86 Q30 80 40 86 Q50 92 60 86 Q70 80 80 86"/></svg>
       Birdie
     </div>
-    <button class="lang-switch" id="themeBtn" onclick="App.toggleTheme()" aria-label="Тема">☀</button>
-    <button class="lang-switch" id="langSwitch" onclick="App.toggleLang()"><span id="curFlag">🇷🇺</span><span id="curCode">RU</span> ▾</button>
+    <div class="topctrl">
+      <button id="themeBtn" class="themebtn" onclick="App.toggleTheme()" aria-label="Тема">☀</button>
+      <nav class="langbar" id="langbar" aria-label="Language"></nav>
+    </div>
   </header>
   <main id="view"></main>
   <nav id="nav"></nav>
+  <footer class="appfoot">
+    <span>© 2026 <a id="hubLink" href="#" target="_blank" rel="noopener">SeedWave</a> · <a id="authorLink" href="#" target="_blank" rel="noopener">Igor Kartuzov</a></span>
+  </footer>
 </div>
 
 <script>
@@ -220,8 +218,8 @@ const App = {
     const urlTheme = new URLSearchParams(location.search).get('theme');
     const savedTheme = this.store('get','theme');
     this.applyTheme(savedTheme || urlTheme || ((window.matchMedia && matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark'));
-    this.renderLangScreen();
-    if(chosen){ this.start(chosen); }
+    this.renderLangbar();
+    this.start(chosen || (this.manifest.langs.find(l=>l.live)||{code:'ru'}).code);
   },
 
   applyTheme(x){
@@ -234,10 +232,10 @@ const App = {
     this.applyTheme(cur); this.store('set','theme',cur);
   },
 
-  renderLangScreen(){
-    const list = document.getElementById('langList');
-    list.innerHTML = this.manifest.langs.filter(l=>l.live).map(l=>
-      `<button class="lang-btn" onclick="App.start('${l.code}')"><span class="flag">${l.flag}</span> ${l.name}</button>`
+  renderLangbar(){
+    const bar = document.getElementById('langbar');
+    bar.innerHTML = this.manifest.langs.filter(l=>l.live).map(l=>
+      `<button data-lang="${l.code}" onclick="App.start('${l.code}')">${l.code.toUpperCase()}</button>`
     ).join('');
   },
 
@@ -254,17 +252,12 @@ const App = {
       [this.content.glossary,this.content.shots,this.content.qa,this.content.sessions,this.content.rules] =
         await Promise.all([this.get(c.glossary),this.get(c.shots),this.get(c.qa),this.get(c.sessions),this.get(c.rules)]);
     }
-    document.getElementById('langScreen').classList.add('hidden');
     document.getElementById('app').classList.remove('hidden');
-    document.getElementById('curFlag').textContent = L.flag;
-    document.getElementById('curCode').textContent = code.toUpperCase();
+    document.querySelectorAll('#langbar button').forEach(b=>b.classList.toggle('on', b.dataset.lang===code));
+    const hl=document.getElementById('hubLink'); if(hl) hl.href='https://ikartuzov-hub.github.io/seedwave-catalog/hub/?lang='+code;
+    const al=document.getElementById('authorLink'); if(al) al.href='https://www.linkedin.com/in/igor-kartuzov/';
     this.renderNav();
     this.go(this.view);
-  },
-
-  toggleLang(){
-    document.getElementById('app').classList.add('hidden');
-    document.getElementById('langScreen').classList.remove('hidden');
   },
 
   renderNav(){
