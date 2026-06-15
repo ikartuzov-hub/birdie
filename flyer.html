@@ -4,119 +4,133 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Birdie — гольф понятен на твоём языке</title>
+<meta name="description" content="Birdie — гольф-ассистент: термины, удары, правила и этикет на пяти языках. Открыл на поле, понял тренера, запомнил. Бесплатно, офлайн.">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Hanken+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#10160F; --bg2:#161F14; --bg3:#1E2A1B;
-    --bd:#2C3A26; --bd2:#3B4D32;
-    --fg:#EFF3E4; --mut:#A8B695; --mut2:#79866A;
-    --green:#8CC45A; --green2:#B5DD8E; --sand:#E4C98F; --sand2:#F2DEB4;
-    --sky:#8FC7E8; --flag:#E0876A; --berry:#D4849C;
-    --ser:'Fraunces',serif; --ui:'Hanken Grotesk',sans-serif; --mono:'JetBrains Mono',monospace;
+    --shell:#08231A;
+    --bg:#0E3B2E; --bg2:#123F30; --bg3:#17493A;
+    --line:#1F6450; --line2:#2C6B54;
+    --ink:#F2E8CE; --mut:#AEC3B2; --mut2:#7C9484;
+    --accent:#F0C24A; --onAccent:#123226;
+    --c1:#F0C24A; --c2:#E4C98F; --c3:#8FC7E8; --c4:#E8956F; --c5:#D4849C;
+    --ser:'Fraunces',serif; --ui:'Manrope',sans-serif; --mono:'JetBrains Mono',monospace;
+  }
+  :root[data-theme="light"]{
+    --shell:#E7DCC4;
+    --bg:#F4ECD9; --bg2:#EFE6CE; --bg3:#E9DCBE;
+    --line:#D8CBA8; --line2:#C9B98F;
+    --ink:#14533F; --mut:#4C6B57; --mut2:#84957F;
+    --accent:#16614A; --onAccent:#F4ECD9;
+    --c1:#16614A; --c2:#A9762A; --c3:#2E7BA6; --c4:#C2603C; --c5:#A85070;
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  body{background:#0A0E09;font-family:var(--ui);color:var(--fg);
-    -webkit-font-smoothing:antialiased;padding:20px 14px;line-height:1.5}
-  .page{width:210mm;max-width:100%;margin:0 auto;background:var(--bg);
-    border:1px solid var(--bd);border-radius:14px;overflow:hidden}
+  body{background:var(--shell);font-family:var(--ui);color:var(--ink);
+    -webkit-font-smoothing:antialiased;padding:20px 14px;line-height:1.5;transition:background .25s}
+  .page{position:relative;width:210mm;max-width:100%;margin:0 auto;background:var(--bg);
+    border:1px solid var(--line);border-radius:14px;overflow:hidden}
   .pad{padding:22px 34px}
   .brandline{display:flex;height:5px}
   .brandline span{flex:1}
 
-  .repobar{display:flex;align-items:center;gap:10px;padding:10px 34px;
-    border-bottom:1px solid var(--bd);background:var(--bg2);font-family:var(--mono);font-size:13px}
-  .repobar .path{color:var(--green2);font-weight:500}
+  .repobar{display:flex;align-items:center;gap:10px;padding:9px 16px 9px 14px;
+    border-bottom:1px solid var(--line);background:var(--bg2);font-family:var(--mono);font-size:13px}
+  .brandmark{width:24px;height:24px;flex:none}
+  .repobar .path{color:var(--accent);font-weight:500}
   .repobar .slash{color:var(--mut2)}
-  .pill{font-size:11px;color:var(--mut);border:1px solid var(--bd2);border-radius:20px;padding:2px 9px}
+  .pill{font-size:11px;color:var(--mut);border:1px solid var(--line2);border-radius:20px;padding:2px 9px}
   .repobar .spacer{flex:1}
   .stat{color:var(--mut);font-size:12px}
-  .stat b{color:var(--fg);font-weight:500}
-  .swallow{flex:none}
+  .stat b{color:var(--ink);font-weight:500}
 
-  /* переключатель языков с живым глобусом */
+  .themebtn{background:var(--bg3);border:1px solid var(--line2);border-radius:8px;width:31px;height:30px;
+    color:var(--ink);font-size:15px;cursor:pointer;line-height:1;transition:transform .16s ease,border-color .16s ease}
+  .themebtn:hover{transform:translateY(-1px) scale(1.05);border-color:var(--accent)}
+
   .langsel{position:relative}
-  .langbtn{display:flex;align-items:center;gap:7px;background:var(--bg3);border:1px solid var(--bd2);
-    border-radius:8px;padding:5px 11px;color:var(--fg);font-family:var(--mono);font-size:13px;
+  .langbtn{display:flex;align-items:center;gap:7px;background:var(--bg3);border:1px solid var(--line2);
+    border-radius:8px;padding:5px 11px;color:var(--ink);font-family:var(--mono);font-size:13px;
     cursor:pointer;transition:transform .16s ease,border-color .16s ease}
-  .langbtn:hover{transform:translateY(-1px) scale(1.05);border-color:var(--green)}
+  .langbtn:hover{transform:translateY(-1px) scale(1.05);border-color:var(--accent)}
   .globe{display:inline-block;line-height:0;animation:gspin 1.6s ease .4s 1 both}
   .langbtn:hover .globe{animation:gspin 1.2s ease infinite}
-  @keyframes gspin{
-    0%{transform:rotate(0deg) scale(1)}
-    50%{transform:rotate(180deg) scale(1.12)}
-    100%{transform:rotate(360deg) scale(1)}
-  }
+  @keyframes gspin{0%{transform:rotate(0deg) scale(1)}50%{transform:rotate(180deg) scale(1.12)}100%{transform:rotate(360deg) scale(1)}}
   .langmenu{position:absolute;right:0;top:calc(100% + 6px);background:var(--bg3);
-    border:1px solid var(--bd2);border-radius:9px;padding:5px;display:none;z-index:9;min-width:160px}
+    border:1px solid var(--line2);border-radius:9px;padding:5px;display:none;z-index:9;min-width:160px}
   .langmenu.open{display:block}
   .langitem{display:block;width:100%;text-align:left;background:none;border:none;cursor:pointer;
-    color:var(--fg);font-family:var(--ui);font-size:14px;padding:8px 12px;border-radius:6px}
-  .langitem:hover{background:var(--bg2);color:var(--green2)}
-  .langitem.on{color:var(--green2)}
+    color:var(--ink);font-family:var(--ui);font-size:14px;padding:8px 12px;border-radius:6px}
+  .langitem:hover{background:var(--bg2);color:var(--accent)}
+  .langitem.on{color:var(--accent)}
 
   .count{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:10px 34px;
-    background:#171F12;border-bottom:1px solid var(--bd)}
-  .count .lbl{font-family:var(--mono);font-size:12px;color:var(--green2);letter-spacing:.04em}
+    background:var(--bg2);border-bottom:1px solid var(--line)}
+  .count .lbl{font-family:var(--mono);font-size:12px;color:var(--accent);letter-spacing:.04em}
   .count .note{font-size:12px;color:var(--mut);margin-left:auto}
-  .count .note b{color:var(--sand);font-weight:500}
+  .count .note b{color:var(--c2);font-weight:600}
 
-  .kicker{font-family:var(--mono);font-size:12px;color:var(--green2);letter-spacing:.04em;margin-bottom:12px}
-  h1{font-family:var(--ser);font-weight:500;font-size:38px;line-height:1.08;letter-spacing:-.01em;margin-bottom:14px}
-  h1 .em{font-style:italic;color:var(--sand)}
-  .punch{font-size:17px;color:var(--fg);font-weight:500;margin-bottom:10px;max-width:62ch;line-height:1.4}
-  .punch .em{font-style:italic;color:var(--sand)}
+  .kicker{font-family:var(--mono);font-size:12px;color:var(--accent);letter-spacing:.04em;margin-bottom:12px}
+  h1{font-family:var(--ser);font-weight:500;font-size:38px;line-height:1.08;letter-spacing:-.01em;margin-bottom:14px;color:var(--ink)}
+  h1 .em{font-style:italic;color:var(--accent)}
+  .punch{font-size:17px;color:var(--ink);font-weight:500;margin-bottom:10px;max-width:62ch;line-height:1.4}
+  .punch .em{font-style:italic;color:var(--accent)}
   .lede{font-size:15px;color:var(--mut);max-width:62ch}
-  .lede b{color:var(--fg);font-weight:500}
+  .lede b{color:var(--ink);font-weight:600}
   .hero-link{display:inline-block;margin-top:16px;font-family:var(--mono);font-size:14px;
-    color:var(--green2);text-decoration:none;border-bottom:1px dashed var(--green)}
+    color:var(--accent);text-decoration:none;border-bottom:1px dashed var(--accent)}
+  .hero-link:hover{opacity:.85}
 
-  .hr{height:1px;background:var(--bd);margin:0}
+  .hr{height:1px;background:var(--line);margin:0}
   .sec-h{font-family:var(--mono);font-size:12px;color:var(--mut);letter-spacing:.05em;
     text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px}
-  .sec-h::before{content:"";width:18px;height:4px;border-radius:2px;background:var(--green)}
-  .sec-h.sa::before{background:var(--sand)}
-  .sec-h.sk::before{background:var(--sky)}
-  .sec-h.fl::before{background:var(--flag)}
+  .sec-h::before{content:"";width:18px;height:4px;border-radius:2px;background:var(--c1)}
+  .sec-h.sa::before{background:var(--c2)}
+  .sec-h.sk::before{background:var(--c3)}
+  .sec-h.fl::before{background:var(--c4)}
 
   .grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
-  .card{background:var(--bg2);border:1px solid var(--bd);border-radius:10px;padding:14px 16px;
-    border-top:3px solid var(--bd2)}
-  .card:nth-child(1){border-top-color:var(--green)}
-  .card:nth-child(2){border-top-color:var(--sky)}
-  .card:nth-child(3){border-top-color:var(--sand)}
-  .card:nth-child(4){border-top-color:var(--flag)}
-  .card .lab{font-family:var(--mono);font-size:11px;color:var(--sand);margin-bottom:6px;letter-spacing:.03em}
-  .card h3{font-family:var(--ser);font-size:19px;font-weight:500;margin-bottom:5px}
+  .card{background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:14px 16px;border-top:3px solid var(--line2)}
+  .card:nth-child(1){border-top-color:var(--c1)}
+  .card:nth-child(2){border-top-color:var(--c2)}
+  .card:nth-child(3){border-top-color:var(--c3)}
+  .card:nth-child(4){border-top-color:var(--c4)}
+  .card .lab{font-family:var(--mono);font-size:11px;color:var(--c2);margin-bottom:6px;letter-spacing:.03em}
+  .card h3{font-family:var(--ser);font-size:19px;font-weight:500;margin-bottom:5px;color:var(--ink)}
   .card p{font-size:13.5px;color:var(--mut)}
-  .card p b{color:var(--fg);font-weight:500}
+  .card p b{color:var(--ink);font-weight:600}
 
-  .langbar{display:flex;height:9px;border-radius:6px;overflow:hidden;margin-bottom:11px;border:1px solid var(--bd)}
+  .langbar{display:flex;height:9px;border-radius:6px;overflow:hidden;margin-bottom:11px;border:1px solid var(--line)}
   .langbar span{display:block}
   .langlegend{display:flex;flex-wrap:wrap;gap:9px 16px;font-size:13px;color:var(--mut)}
   .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:-1px}
-  .langlegend b{color:var(--fg);font-weight:500}
+  .langlegend b{color:var(--ink);font-weight:600}
+  .lnote{font-size:13.5px;color:var(--mut);margin-top:11px}
 
   .club{display:grid;grid-template-columns:1fr 1fr;gap:11px}
-  .clubcard{background:var(--bg2);border:1px solid var(--bd);border-radius:10px;padding:14px 16px;
-    border-left:3px solid var(--sand)}
-  .clubcard h3{font-family:var(--ser);font-size:19px;font-weight:500;margin-bottom:5px;color:var(--sand2)}
+  .clubcard{background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:14px 16px;border-left:3px solid var(--c2)}
+  .clubcard h3{font-family:var(--ser);font-size:19px;font-weight:500;margin-bottom:5px;color:var(--c2)}
   .clubcard p{font-size:13.5px;color:var(--mut)}
-  .clubcard p b{color:var(--fg);font-weight:500}
+  .clubcard p b{color:var(--ink);font-weight:600}
 
   .ladder{display:flex;flex-direction:column;gap:10px}
-  .step{display:flex;gap:16px;align-items:stretch;border:1px solid var(--bd);border-radius:12px;
+  .step{display:flex;gap:16px;align-items:stretch;border:1px solid var(--line);border-radius:12px;
     background:var(--bg2);padding:14px 18px;transition:transform .16s ease}
   .step:hover{transform:translateY(-2px)}
   .step .no{font-family:var(--mono);font-size:12px;color:var(--mut2);flex:none;width:26px;padding-top:3px}
   .step .body{flex:1;min-width:0}
   .step .pt{font-family:var(--mono);font-size:11.5px;color:var(--mut);margin-bottom:4px}
-  .step h3{font-family:var(--ser);font-size:20px;font-weight:500;margin-bottom:4px}
+  .step .pt.accent{color:var(--accent)}
+  .step h3{font-family:var(--ser);font-size:20px;font-weight:500;margin-bottom:4px;color:var(--ink)}
   .step .sub{font-size:13px;color:var(--mut);max-width:58ch}
-  .step .sub b{color:var(--fg);font-weight:500}
+  .step .sub b{color:var(--ink);font-weight:600}
   .step .side{flex:none;display:flex;flex-direction:column;justify-content:center;align-items:flex-end;gap:8px;min-width:165px}
-  .step .amt{font-family:var(--ser);font-size:24px;font-weight:500;white-space:nowrap;transition:transform .16s ease}
+  .step .amt{font-family:var(--ser);font-size:24px;font-weight:500;white-space:nowrap;transition:transform .16s ease;color:var(--ink)}
+  .step .amt.accent{color:var(--accent)}
+  .step .amt.c2{color:var(--c2)}
   .step:hover .amt{transform:scale(1.08)}
   .step .amt small{font-size:13px;color:var(--mut);font-family:var(--ui)}
   .step .amt s{color:var(--mut2)}
@@ -124,28 +138,29 @@
     border-radius:8px;padding:9px 16px;font-family:var(--ui);min-width:165px;transition:transform .16s ease}
   .btn:hover{transform:translateY(-2px) scale(1.05)}
   .btn:active{transform:scale(.96)}
-  .btn.hot{background:var(--green);color:#15240C;border:1px solid var(--green2)}
-  .btn.warm{background:transparent;color:var(--sand);border:1px solid var(--sand)}
-  .btn.o{background:transparent;color:var(--fg);border:1px solid var(--bd2)}
-  .step.s1{border-color:var(--green);background:#19250F;border-left:6px solid var(--green)}
-  .step.s1 .no{color:var(--green2)}
-  .step.s1 h3{color:var(--green2)}
-  .step.s2{border-left:6px solid var(--sand)}
-  .step.s3{border-left:6px solid var(--sky)}
-  .step.s4{border-left:6px solid var(--flag);background:var(--bg)}
-  .lock{font-family:var(--mono);font-size:11px;color:var(--mut2);border:1px dashed var(--bd2);
+  .btn.hot{background:var(--accent);color:var(--onAccent);border:1px solid var(--accent)}
+  .btn.warm{background:transparent;color:var(--c2);border:1px solid var(--c2)}
+  .btn.o{background:transparent;color:var(--ink);border:1px solid var(--line2)}
+  .step.s1{border-color:var(--accent);background:var(--bg3);border-left:6px solid var(--accent)}
+  .step.s1 .no{color:var(--accent)}
+  .step.s1 h3{color:var(--accent)}
+  .step.s2{border-left:6px solid var(--c2)}
+  .step.s3{border-left:6px solid var(--c3)}
+  .step.s4{border-left:6px solid var(--c4)}
+  .lock{font-family:var(--mono);font-size:11px;color:var(--mut2);border:1px dashed var(--line2);
     border-radius:6px;padding:2px 8px;margin-left:8px;vertical-align:2px;white-space:nowrap}
   .honest{font-size:12.5px;color:var(--mut);margin-top:14px}
-  .honest b{color:var(--sand);font-weight:500}
+  .honest b{color:var(--c2);font-weight:600}
 
-  /* единый сухой подвал — стандарт семейства */
-  .family{text-align:center;padding:14px 34px;background:#0D120B;border-top:1px solid var(--bd);
+  .family{text-align:center;padding:14px 34px;background:var(--shell);border-top:1px solid var(--line);
     font-family:var(--mono);font-size:12px;color:var(--mut2)}
   .family a{color:var(--mut);text-decoration:none;border-bottom:1px dotted var(--mut2)}
+  .family a:hover{color:var(--accent)}
 
   @media (max-width:680px){
     h1{font-size:30px}.grid,.club{grid-template-columns:1fr}
-    .pad{padding:20px 20px}.repobar,.count,.family{padding-left:20px;padding-right:20px}
+    .pad{padding:20px 20px}.repobar,.count,.family{padding-left:16px;padding-right:16px}
+    .count{padding-left:20px;padding-right:20px}
     .stat{display:none}
     .step{flex-direction:column;gap:10px}
     .step .side{flex-direction:row;align-items:center;justify-content:space-between;min-width:0}
@@ -153,13 +168,13 @@
     .btn{min-width:0;flex:1;max-width:220px}
   }
   @media (prefers-reduced-motion: reduce){
-    .btn,.step,.step .amt,.langbtn,.globe{animation:none;transition:none}
-    .btn:hover,.step:hover,.step:hover .amt,.langbtn:hover{transform:none}
+    .btn,.step,.step .amt,.langbtn,.globe,.themebtn{animation:none;transition:none}
+    .btn:hover,.step:hover,.step:hover .amt,.langbtn:hover,.themebtn:hover{transform:none}
   }
   @media print{
-    body{background:#fff;padding:0}
+    body{background:#fff;padding:0;color:#111}
     .page{border:none;border-radius:0;width:auto}
-    .langsel{display:none}
+    .langsel,.themebtn{display:none}
     @page{size:A4;margin:8mm}
   }
 </style>
@@ -168,33 +183,29 @@
 <main class="page">
 
   <div class="brandline">
-    <span style="background:var(--green)"></span>
-    <span style="background:var(--sand)"></span>
-    <span style="background:var(--sky)"></span>
-    <span style="background:var(--green2)"></span>
-    <span style="background:var(--flag)"></span>
+    <span style="background:var(--c1)"></span>
+    <span style="background:var(--c2)"></span>
+    <span style="background:var(--c3)"></span>
+    <span style="background:var(--c4)"></span>
+    <span style="background:var(--c5)"></span>
   </div>
 
   <div class="repobar">
-    <svg class="swallow" width="22" height="16" viewBox="0 0 44 32" fill="none" aria-hidden="true">
-      <path d="M2 6 C14 2, 22 8, 24 14 C30 8, 38 6, 42 8 C36 12, 30 16, 26 18 L30 30 L24 20 L20 28 L20 18 C12 16, 6 12, 2 6 Z"
-        stroke="var(--sand)" stroke-width="1.6" stroke-linejoin="round" fill="none"/>
-    </svg>
+    <span class="brandmark"><svg viewBox="0 0 100 100" fill="none" stroke="var(--accent)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M33 16 L33 72"/><path d="M33 16 C57 16 57 42 35 43 C59 44 59 72 33 72"/><path d="M20 86 Q30 80 40 86 Q50 92 60 86 Q70 80 80 86"/></svg></span>
     <span class="path">birdie<span class="slash"> / </span>golf companion</span>
     <span class="pill">Public</span>
     <span class="spacer"></span>
     <span class="stat">⛳ <b>golf · Madeira</b></span>
+    <button class="themebtn" id="themeBtn" aria-label="Сменить тему">☀</button>
     <div class="langsel">
       <button class="langbtn" id="langBtn" aria-label="Сменить язык">
         <span class="globe">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--green2)" stroke-width="1.7" stroke-linecap="round">
-            <circle cx="12" cy="12" r="9"/>
-            <ellipse cx="12" cy="12" rx="4" ry="9"/>
-            <path d="M3.5 9h17M3.5 15h17"/>
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.7" stroke-linecap="round">
+            <circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3.5 9h17M3.5 15h17"/>
           </svg>
         </span>
         <span id="langCode">RU</span>
-        <span style="color:var(--mut2);font-size:10px">▾</span>
+        <span style="color:var(--mut2);font-size:10px">&#9662;</span>
       </button>
       <div class="langmenu" id="langMenu">
         <button class="langitem on" data-lang="ru">🇷🇺 Русский</button>
@@ -206,146 +217,127 @@
     </div>
   </div>
 
-  <div class="count">
-    <span class="lbl" data-i18n="count_lbl">// пилот · гольф-курс на Мадейре</span>
-    <span class="note" data-i18n="count_note">каждый урок пополняет базу — <b>Birdie умнеет с каждым полем</b></span>
+  <div id="content">
+<!-- pages/flyer.ru.html · © Igor Kartuzov · SeedWave -->
+<div class="count">
+  <span class="lbl">// пилот · гольф-курс на Мадейре</span>
+  <span class="note">каждый урок пополняет базу — <b>Birdie умнеет с каждым полем</b></span>
+</div>
+
+<div class="pad">
+  <div class="kicker">// golf companion</div>
+  <h1>Урок гольфа идёт на португальском.<br>Birdie переводит его на <span class="em">твой язык.</span></h1>
+  <p class="punch">Тренер сказал — ты <span class="em">понял и запомнил</span>. 73 термина, 7 ударов, ответы на вопросы всей группы — на любом из пяти языков, в кармане, офлайн.</p>
+  <p class="lede"><b>Открыл на телефоне прямо на поле</b> — нашёл термин — увидел, как делается удар — задал вопрос. Половина гольф-словаря международна: барьер падает за первый урок.</p>
+  <a class="hero-link" data-href="app" target="_blank" rel="noopener">→ открыть Birdie — бесплатно · работает офлайн</a>
+</div>
+
+<div class="hr"></div>
+
+<div class="pad">
+  <div class="sec-h">Почему запоминается — психология, не зубрёжка</div>
+  <div class="grid">
+    <div class="card"><div class="lab">след урока</div><h3>Эмоция момента = якорь</h3><p>После урока — 5–7 терминов дня <b>с твоей эмоцией момента</b>: «мяч ушёл вправо — вот это slice». Личная история приклеивает слово навсегда.</p></div>
+    <div class="card"><div class="lab">общая комната</div><h3>Спросил один — знают все</h3><p>Твой вопрос и ответ тренера остаются в общей базе курса. <b>Новая группа стартует с опытом всех предыдущих.</b></p></div>
+    <div class="card"><div class="lab">тренер выверил ⚑</div><h3>Доверие вместо гугла</h3><p>Техника ударов и португальские термины проверены инструктором поля. Флажок ⚑ — значит <b>так говорят и делают здесь</b>.</p></div>
+    <div class="card"><div class="lab">полёт мяча</div><h3>Понимаешь свой удар</h3><p>Draw, fade, slice, hook — видишь, <b>что произошло с мячом и почему</b>. Разбор полёта на твоём языке, сразу на поле.</p></div>
   </div>
+</div>
 
-  <div class="pad">
-    <div class="kicker">// golf companion · v2</div>
-    <h1 data-i18n="h1">Урок гольфа идёт на португальском.<br>Birdie переводит его на <span class="em">твой язык.</span></h1>
-    <p class="punch" data-i18n="punch">Тренер сказал — ты <span class="em">понял и запомнил</span>. 73 термина, 7 ударов, ответы на вопросы всей группы — на любом из пяти языков, в кармане, офлайн.</p>
-    <p class="lede" data-i18n="lede"><b>Открыл на телефоне прямо на поле</b> — нашёл термин — увидел, как делается удар — задал вопрос. Половина гольф-словаря международна: барьер падает за первый урок.</p>
-    <a class="hero-link" data-i18n="hero" href="https://ikartuzov-hub.github.io/birdie/" target="_blank" rel="noopener">→ открыть Birdie — бесплатно · работает офлайн</a>
+<div class="hr"></div>
+
+<div class="pad">
+  <div class="sec-h sa">Ты не чужой на поле — стиль и клуб</div>
+  <div class="club">
+    <div class="clubcard"><h3>Одет по стилю гольфа</h3><p>Дресс-код и этикет без неловкости: <b>что надеть, как себя вести</b>. Гид по стилю — от поло до софт-спайков — на твоём языке.</p></div>
+    <div class="clubcard"><h3>Акции полей и партнёров</h3><p>Скидки учеников курса: <b>грин-фи курсового поля, экипировка, магазины-партнёры</b>. Предложения приходят прямо в Birdie — по коду твоей группы.</p></div>
   </div>
+</div>
 
-  <div class="hr"></div>
+<div class="hr"></div>
 
-  <div class="pad">
-    <div class="sec-h" data-i18n="sec1">Почему запоминается — психология, не зубрёжка</div>
-    <div class="grid">
-      <div class="card">
-        <div class="lab" data-i18n="c1l">след урока</div>
-        <h3 data-i18n="c1h">Эмоция момента = якорь</h3>
-        <p data-i18n="c1p">После урока — 5–7 терминов дня <b>с твоей эмоцией момента</b>: «мяч ушёл вправо — вот это slice». Личная история приклеивает слово навсегда.</p>
+<div class="pad">
+  <div class="sec-h sk">Пять языков — скоро ещё десять</div>
+  <div class="langbar">
+    <span style="width:20%;background:var(--c1)"></span>
+    <span style="width:20%;background:var(--c2)"></span>
+    <span style="width:20%;background:var(--c3)"></span>
+    <span style="width:16%;background:var(--c4)"></span>
+    <span style="width:16%;background:var(--c5)"></span>
+    <span style="width:8%;background:var(--line2)"></span>
+  </div>
+  <div class="langlegend">
+    <span><i class="dot" style="background:var(--c1)"></i><b>Português</b></span>
+    <span><i class="dot" style="background:var(--c2)"></i><b>Русский</b></span>
+    <span><i class="dot" style="background:var(--c3)"></i><b>English</b></span>
+    <span><i class="dot" style="background:var(--c4)"></i><b>Deutsch</b></span>
+    <span><i class="dot" style="background:var(--c5)"></i><b>Español</b></span>
+    <span><i class="dot" style="background:var(--line2)"></i>+ ещё 10 языков в плане</span>
+  </div>
+  <p class="lnote">Каждый термин — <span style="color:var(--ink)">сразу на пяти языках</span>: услышал на поле по-португальски — нашёл на своём языке — узнал международный термин. Новый язык = новый словарь, не новое приложение.</p>
+</div>
+
+<div class="hr"></div>
+
+<div class="pad">
+  <div class="sec-h fl">Четыре ступени — начни с бесплатной</div>
+  <div class="ladder">
+
+    <div class="step s1">
+      <span class="no">01</span>
+      <div class="body">
+        <div class="pt accent">// приложение · бесплатно · офлайн</div>
+        <h3>Сделай свой Birdie</h3>
+        <p class="sub">Термины, удары, вопросы-ответы, правила и этикет — на пяти языках. <b>Открыл ссылку — добавил на экран — работает без интернета.</b> Ничего не платишь.</p>
       </div>
-      <div class="card">
-        <div class="lab" data-i18n="c2l">общая комната</div>
-        <h3 data-i18n="c2h">Спросил один — знают все</h3>
-        <p data-i18n="c2p">Твой вопрос и ответ тренера остаются в общей базе курса. <b>Новая группа стартует с опытом всех предыдущих.</b></p>
-      </div>
-      <div class="card">
-        <div class="lab" data-i18n="c3l">тренер выверил ⚑</div>
-        <h3 data-i18n="c3h">Доверие вместо гугла</h3>
-        <p data-i18n="c3p">Техника ударов и португальские термины проверены инструктором поля. Флажок ⚑ — значит <b>так говорят и делают здесь</b>.</p>
-      </div>
-      <div class="card">
-        <div class="lab" data-i18n="c4l">полёт мяча</div>
-        <h3 data-i18n="c4h">Понимаешь свой удар</h3>
-        <p data-i18n="c4p">Draw, fade, slice, hook — видишь, <b>что произошло с мячом и почему</b>. Разбор полёта на твоём языке, сразу на поле.</p>
+      <div class="side">
+        <div class="amt accent">€0</div>
+        <a class="btn hot" data-href="app" target="_blank" rel="noopener">Открыть Birdie →</a>
       </div>
     </div>
+
+    <div class="step s2">
+      <span class="no">02</span>
+      <div class="body">
+        <div class="pt">// след урока · top-up · разово</div>
+        <h3>Твой урок — в твою память</h3>
+        <p class="sub">После занятия пришли пару строк: что получилось, что удивило, где улетел мяч. <b>Соберу 5–7 терминов дня с твоими эмоциональными якорями</b> — и они твои навсегда.</p>
+      </div>
+      <div class="side">
+        <div class="amt">€0 <small><s>€7</s> разово</small></div>
+        <a class="btn warm" data-href="hub" rel="noopener">Заказать со скидкой</a>
+      </div>
+    </div>
+
+    <div class="step s3">
+      <span class="no">03</span>
+      <div class="body">
+        <div class="pt">// разовая покупка · <span style="color:var(--c3)">−50% первым 100</span></div>
+        <h3>Birdie всегда рядом</h3>
+        <p class="sub">Авторские курсы, полный словарь, удары с разбором, твои якоря. Офлайн, прогресс на устройстве.</p>
+      </div>
+      <div class="side">
+        <div class="amt">€0 <small><s>€39</s> · навсегда</small></div>
+        <a class="btn warm" data-href="hub" rel="noopener">Забрать со скидкой</a>
+      </div>
+    </div>
+
+    <div class="step s4">
+      <span class="no">04</span>
+      <div class="body">
+        <div class="pt">// клуб birdie <span class="lock">по коду группы курса</span></div>
+        <h3>Общая комната и турнир с Birdie</h3>
+        <p class="sub">Вопросы в группе и тренеру — ответы остаются всем. <b>«Общая комната» группы, турнир пошагово с Birdie</b>, акции полей и партнёров.</p>
+      </div>
+      <div class="side">
+        <div class="amt c2">€0 <small>с курсом</small></div>
+        <a class="btn o" data-href="hub" rel="noopener">Войти по коду</a>
+      </div>
+    </div>
+
   </div>
-
-  <div class="hr"></div>
-
-  <div class="pad">
-    <div class="sec-h sa" data-i18n="sec2">Ты не чужой на поле — стиль и клуб</div>
-    <div class="club">
-      <div class="clubcard">
-        <h3 data-i18n="cl1h">Одет по стилю гольфа</h3>
-        <p data-i18n="cl1p">Дресс-код и этикет без неловкости: <b>что надеть, как себя вести</b>. Гид по стилю — от поло до софт-спайков — на твоём языке.</p>
-      </div>
-      <div class="clubcard">
-        <h3 data-i18n="cl2h">Акции полей и партнёров</h3>
-        <p data-i18n="cl2p">Скидки учеников курса: <b>грин-фи курсового поля, экипировка, магазины-партнёры</b>. Предложения приходят прямо в Birdie — по коду твоей группы.</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="hr"></div>
-
-  <div class="pad">
-    <div class="sec-h sk" data-i18n="sec3">Пять языков — скоро ещё десять</div>
-    <div class="langbar">
-      <span style="width:20%;background:var(--green)"></span>
-      <span style="width:20%;background:var(--sand)"></span>
-      <span style="width:20%;background:var(--sky)"></span>
-      <span style="width:16%;background:var(--flag)"></span>
-      <span style="width:16%;background:var(--berry)"></span>
-      <span style="width:8%;background:var(--bd2)"></span>
-    </div>
-    <div class="langlegend" data-i18n="legend">
-      <span><i class="dot" style="background:var(--green)"></i><b>Português</b></span>
-      <span><i class="dot" style="background:var(--sand)"></i><b>Русский</b></span>
-      <span><i class="dot" style="background:var(--sky)"></i><b>English</b></span>
-      <span><i class="dot" style="background:var(--flag)"></i><b>Deutsch</b></span>
-      <span><i class="dot" style="background:var(--berry)"></i><b>Español</b></span>
-      <span><i class="dot" style="background:var(--mut2)"></i>+ ещё 10 языков в плане</span>
-    </div>
-    <p style="font-size:13.5px;color:var(--mut);margin-top:11px" data-i18n="lnote">Каждый термин — <span style="color:var(--fg)">сразу на пяти языках</span>: услышал на поле по-португальски — нашёл на своём языке — узнал международный термин. Новый язык = новый словарь, не новое приложение.</p>
-  </div>
-
-  <div class="hr"></div>
-
-  <div class="pad">
-    <div class="sec-h fl" data-i18n="sec4">Четыре ступени — начни с бесплатной</div>
-    <div class="ladder">
-
-      <div class="step s1">
-        <span class="no">01</span>
-        <div class="body">
-          <div class="pt" style="color:var(--green2)" data-i18n="s1pt">// приложение · бесплатно · офлайн</div>
-          <h3 data-i18n="s1h">Сделай свой Birdie</h3>
-          <p class="sub" data-i18n="s1s">Термины, удары, вопросы-ответы, правила и этикет — на пяти языках. <b>Открыл ссылку — добавил на экран — работает без интернета.</b> Ничего не платишь.</p>
-        </div>
-        <div class="side">
-          <div class="amt" style="color:var(--green2)">€0</div>
-          <a class="btn hot" data-i18n="s1b" href="https://ikartuzov-hub.github.io/birdie/" target="_blank" rel="noopener">Открыть Birdie →</a>
-        </div>
-      </div>
-
-      <div class="step s2">
-        <span class="no">02</span>
-        <div class="body">
-          <div class="pt" data-i18n="s2pt">// след урока · top-up · разово</div>
-          <h3 data-i18n="s2h">Твой урок — в твою память</h3>
-          <p class="sub" data-i18n="s2s">После занятия пришли пару строк: что получилось, что удивило, где улетел мяч. <b>Соберу 5–7 терминов дня с твоими эмоциональными якорями</b> — и они твои навсегда.</p>
-        </div>
-        <div class="side">
-          <div class="amt">€0 <small><s>€7</s> <span data-i18n="s2a">разово</span></small></div>
-          <a class="btn warm" data-i18n="s2b" href="#" rel="noopener">Заказать со скидкой</a>
-        </div>
-      </div>
-
-      <div class="step s3">
-        <span class="no">03</span>
-        <div class="body">
-          <div class="pt" data-i18n="s3pt">// разовая покупка · <span style="color:var(--sky)">−50% первым 100</span></div>
-          <h3 data-i18n="s3h">Birdie всегда рядом</h3>
-          <p class="sub" data-i18n="s3s">Авторские курсы, полный словарь, удары с разбором, твои якоря. Офлайн, прогресс на устройстве.</p>
-        </div>
-        <div class="side">
-          <div class="amt">€0 <small><s>€39</s> <span data-i18n="s3a">· навсегда</span></small></div>
-          <a class="btn warm" data-i18n="s3b" href="#" rel="noopener">Забрать со скидкой</a>
-        </div>
-      </div>
-
-      <div class="step s4">
-        <span class="no">04</span>
-        <div class="body">
-          <div class="pt"><span data-i18n="s4pt">// клуб birdie</span> <span class="lock" data-i18n="s4lk">по коду группы курса</span></div>
-          <h3 data-i18n="s4h">Общая комната и турнир с Birdie</h3>
-          <p class="sub" data-i18n="s4s">Вопросы в группе и тренеру — ответы остаются всем. <b>«Общая комната» группы, турнир пошагово с Birdie</b>, акции полей и партнёров.</p>
-        </div>
-        <div class="side">
-          <div class="amt" style="color:var(--sand)">€0 <small data-i18n="s4a">с курсом</small></div>
-          <a class="btn o" data-i18n="s4b" href="#" rel="noopener">Войти по коду</a>
-        </div>
-      </div>
-
-    </div>
-    <p class="honest" data-i18n="honest"><b>Честно:</b> Birdie сейчас в пилоте на гольф-курсе на Мадейре. Общая комната и подписка — версия 1.5, выходят в ближайшие недели.</p>
+  <p class="honest"><b>Честно:</b> Birdie сейчас в пилоте на гольф-курсе на Мадейре. Общая комната и подписка — версия 1.5, выходят в ближайшие недели.</p>
+</div>
   </div>
 
   <div class="family">
@@ -355,189 +347,69 @@
 </main>
 
 <script>
-const I18N = {
-ru:{},
-pt:{
- count_lbl:"// piloto · curso de golfe na Madeira",
- count_note:"cada aula alimenta a base — <b>o Birdie fica mais inteligente a cada campo</b>",
- h1:"A aula de golfe decorre em português.<br>O Birdie traduz para <span class=\"em\">a tua língua.</span>",
- punch:"O treinador disse — tu <span class=\"em\">entendeste e memorizaste</span>. 73 termos, 7 pancadas, respostas às perguntas de todo o grupo — em qualquer um dos cinco idiomas, no bolso, offline.",
- lede:"<b>Abres no telemóvel mesmo no campo</b> — encontras o termo — vês como se faz a pancada — fazes a tua pergunta. Metade do vocabulário do golfe é internacional: a barreira cai na primeira aula.",
- hero:"→ abrir o Birdie — grátis · funciona offline",
- sec1:"Porque fica na memória — psicologia, não decoreba",
- c1l:"rasto da aula",c1h:"A emoção do momento = âncora",
- c1p:"Depois da aula — 5–7 termos do dia <b>com a tua emoção do momento</b>: «a bola fugiu para a direita — isto é um slice». A história pessoal cola a palavra para sempre.",
- c2l:"sala comum",c2h:"Um pergunta — todos ficam a saber",
- c2p:"A tua pergunta e a resposta do treinador ficam na base do curso. <b>Cada nova turma começa com a experiência de todas as anteriores.</b>",
- c3l:"verificado pelo treinador ⚑",c3h:"Confiança em vez de google",
- c3p:"A técnica das pancadas e os termos portugueses foram verificados pelo instrutor do campo. A bandeira ⚑ significa: <b>é assim que aqui se diz e se faz</b>.",
- c4l:"voo da bola",c4h:"Percebes a tua pancada",
- c4p:"Draw, fade, slice, hook — vês <b>o que aconteceu à bola e porquê</b>. Análise do voo na tua língua, ali mesmo no campo.",
- sec2:"Não és um estranho no campo — estilo e clube",
- cl1h:"Vestido ao estilo do golfe",
- cl1p:"Dress code e etiqueta sem embaraço: <b>o que vestir, como agir</b>. Guia de estilo — do polo aos soft spikes — na tua língua.",
- cl2h:"Promoções de campos e parceiros",
- cl2p:"Descontos para alunos do curso: <b>green fees do campo do curso, equipamento, lojas parceiras</b>. As ofertas chegam ao Birdie — com o código da tua turma.",
- sec3:"Cinco idiomas — e mais dez a caminho",
- legend:"<span><i class=\"dot\" style=\"background:var(--green)\"></i><b>Português</b></span><span><i class=\"dot\" style=\"background:var(--sand)\"></i><b>Русский</b></span><span><i class=\"dot\" style=\"background:var(--sky)\"></i><b>English</b></span><span><i class=\"dot\" style=\"background:var(--flag)\"></i><b>Deutsch</b></span><span><i class=\"dot\" style=\"background:var(--berry)\"></i><b>Español</b></span><span><i class=\"dot\" style=\"background:var(--mut2)\"></i>+ mais 10 idiomas no plano</span>",
- lnote:"Cada termo — <span style=\"color:var(--fg)\">em cinco línguas ao mesmo tempo</span>: ouviste no campo em português, entendeste na tua língua, conheceste a palavra internacional. Nova língua no Birdie = novo dicionário, não nova aplicação.",
- sec4:"Quatro degraus — começa pelo grátis",
- s1pt:"// aplicação · grátis · offline",s1h:"Abre o Birdie mesmo no campo",
- s1s:"Termos, pancadas, perguntas e respostas, regras e etiqueta — em cinco idiomas. <b>Abres o link — adicionas ao ecrã — funciona sem internet.</b> Não pagas nada.",
- s1b:"Abrir o Birdie →",
- s2pt:"// rasto da aula · top-up · pagamento único",s2h:"A tua aula — na tua memória",
- s2s:"Depois da aula envia umas linhas: o que correu bem, o que te surpreendeu, para onde voou a bola. <b>Monto 5–7 termos do dia com as tuas âncoras emocionais</b> — teus para sempre.",
- s2a:"único",s2b:"Pedir o rasto da aula",
- s3pt:"// compra única · <span style=\"color:var(--sky)\">−50% para os primeiros 100</span>",s3h:"Birdie para sempre",
- s3s:"Cursos de autor, dicionário completo, pancadas com análise, as tuas âncoras. Offline, progresso no aparelho.",
- s3a:"· para sempre",s3b:"Levar com desconto",
- s4pt:"// clube birdie",s4lk:"com o código da turma",s4h:"Sala comum e promoções de parceiros",
- s4s:"Perguntas ao grupo e ao treinador — respostas que ficam para todos. <b>Sala comum do grupo, torneio passo a passo com o Birdie</b>, promoções de campos e parceiros.",
- s4a:"com o curso",s4b:"Entrar com código",
- honest:"<b>Honestamente:</b> o Birdie está em piloto num curso de golfe na Madeira. A sala comum e a subscrição são a versão 1.5 — chegam nas próximas semanas."
-},
-en:{
- count_lbl:"// pilot · golf course in Madeira",
- count_note:"every lesson feeds the base — <b>Birdie gets smarter with every course</b>",
- h1:"The golf lesson is in Portuguese.<br>Birdie translates it into <span class=\"em\">your language.</span>",
- punch:"Your coach said it — you <span class=\"em\">got it and remember it</span>. 73 terms, 7 shots, answers to the whole group's questions — in any of five languages, in your pocket, offline.",
- lede:"<b>Open it right on the course</b> — find the term — see how the shot is made — ask your question. Half of golf vocabulary is international: the barrier drops in lesson one.",
- hero:"→ open Birdie — free · works offline",
- sec1:"Why it sticks — psychology, not cramming",
- c1l:"lesson trail",c1h:"The moment's emotion = anchor",
- c1p:"After the lesson — 5–7 terms of the day <b>with your emotion of the moment</b>: “the ball went right — that's a slice”. A personal story glues the word forever.",
- c2l:"shared room",c2h:"One asks — everyone knows",
- c2p:"Your question and the coach's answer stay in the course base. <b>Every new group starts with the experience of all previous ones.</b>",
- c3l:"coach-verified ⚑",c3h:"Trust instead of google",
- c3p:"Shot technique and Portuguese terms are verified by the course instructor. The ⚑ flag means: <b>this is how it's said and done here</b>.",
- c4l:"ball flight",c4h:"Understand your shot",
- c4p:"Draw, fade, slice, hook — see <b>what happened to the ball and why</b>. Flight analysis in your language, right on the course.",
- sec2:"Not a stranger on the course — style and club",
- cl1h:"Dressed for golf",
- cl1p:"Dress code and etiquette without awkwardness: <b>what to wear, how to act</b>. A style guide — from polos to soft spikes — in your language.",
- cl2h:"Course and partner deals",
- cl2p:"Student discounts: <b>course green fees, gear, partner shops</b>. Offers arrive right in Birdie — with your group's code.",
- sec3:"Five languages — ten more coming",
- legend:"<span><i class=\"dot\" style=\"background:var(--green)\"></i><b>Português</b></span><span><i class=\"dot\" style=\"background:var(--sand)\"></i><b>Русский</b></span><span><i class=\"dot\" style=\"background:var(--sky)\"></i><b>English</b></span><span><i class=\"dot\" style=\"background:var(--flag)\"></i><b>Deutsch</b></span><span><i class=\"dot\" style=\"background:var(--berry)\"></i><b>Español</b></span><span><i class=\"dot\" style=\"background:var(--mut2)\"></i>+ 10 more languages planned</span>",
- lnote:"Every term — <span style=\"color:var(--fg)\">in five languages at once</span>: heard on the course in Portuguese, understood in your language, learned the international word. A new language in Birdie = a new dictionary, not a new app.",
- sec4:"Four steps — start with the free one",
- s1pt:"// app · free · offline",s1h:"Open Birdie right on the course",
- s1s:"Terms, shots, Q&A, rules and etiquette — in five languages. <b>Open the link — add to home screen — works without internet.</b> Pay nothing.",
- s1b:"Open Birdie →",
- s2pt:"// lesson trail · top-up · one-time",s2h:"Your lesson — into your memory",
- s2s:"After class send a few lines: what worked, what surprised you, where the ball flew. <b>I'll build 5–7 terms of the day with your emotional anchors</b> — yours forever.",
- s2a:"one-time",s2b:"Order the lesson trail",
- s3pt:"// one-time purchase · <span style=\"color:var(--sky)\">−50% for the first 100</span>",s3h:"Birdie forever",
- s3s:"Author courses, full glossary, shots with analysis, your anchors. Offline, progress on your device.",
- s3a:"· forever",s3b:"Get the discount",
- s4pt:"// birdie club",s4lk:"with your group code",s4h:"Shared room and partner deals",
- s4s:"Questions to the group and coach — answers stay for everyone. <b>Group shared room, step-by-step tournament with Birdie</b>, course and partner deals.",
- s4a:"with course",s4b:"Enter with code",
- honest:"<b>Honestly:</b> Birdie is piloting at a golf course in Madeira. The shared room and subscription are v1.5 — coming in the next weeks."
-},
-de:{
- count_lbl:"// Pilot · Golfkurs auf Madeira",
- count_note:"jede Stunde füttert die Basis — <b>Birdie wird mit jedem Kurs klüger</b>",
- h1:"Die Golfstunde läuft auf Portugiesisch.<br>Birdie übersetzt sie in <span class=\"em\">deine Sprache.</span>",
- punch:"Der Trainer sagt es — du <span class=\"em\">verstehst und behältst es</span>. 73 Begriffe, 7 Schläge, Antworten auf die Fragen der ganzen Gruppe — in jeder der fünf Sprachen, in der Tasche, offline.",
- lede:"<b>Öffne es direkt auf dem Platz</b> — finde den Begriff — sieh, wie der Schlag geht — stell deine Frage. Die Hälfte des Golfvokabulars ist international: die Barriere fällt in der ersten Stunde.",
- hero:"→ Birdie öffnen — gratis · funktioniert offline",
- sec1:"Warum es hängen bleibt — Psychologie statt Pauken",
- c1l:"Spur der Stunde",c1h:"Die Emotion des Moments = Anker",
- c1p:"Nach der Stunde — 5–7 Begriffe des Tages <b>mit deiner Emotion des Moments</b>: „der Ball zog nach rechts — das ist ein Slice“. Die persönliche Geschichte klebt das Wort für immer fest.",
- c2l:"Gemeinsamer Raum",c2h:"Einer fragt — alle wissen es",
- c2p:"Deine Frage und die Antwort des Trainers bleiben in der Kursbasis. <b>Jede neue Gruppe startet mit der Erfahrung aller vorherigen.</b>",
- c3l:"Vom Trainer geprüft ⚑",c3h:"Vertrauen statt Google",
- c3p:"Schlagtechnik und portugiesische Begriffe sind vom Instruktor des Platzes geprüft. Die Flagge ⚑ heißt: <b>so sagt und macht man es hier</b>.",
- c4l:"Ballflug",c4h:"Versteh deinen Schlag",
- c4p:"Draw, Fade, Slice, Hook — sieh, <b>was mit dem Ball passiert ist und warum</b>. Fluganalyse in deiner Sprache, direkt auf dem Platz.",
- sec2:"Kein Fremder auf dem Platz — Stil und Club",
- cl1h:"Gekleidet im Golf-Stil",
- cl1p:"Dresscode und Etikette ohne Verlegenheit: <b>was anziehen, wie sich verhalten</b>. Stil-Guide — vom Polo bis zu Soft Spikes — in deiner Sprache.",
- cl2h:"Aktionen von Plätzen und Partnern",
- cl2p:"Rabatte für Kursteilnehmer: <b>Greenfees des Kursplatzes, Ausrüstung, Partnershops</b>. Angebote kommen direkt in Birdie — mit dem Code deiner Gruppe.",
- sec3:"Fünf Sprachen — zehn weitere geplant",
- legend:"<span><i class=\"dot\" style=\"background:var(--green)\"></i><b>Português</b></span><span><i class=\"dot\" style=\"background:var(--sand)\"></i><b>Русский</b></span><span><i class=\"dot\" style=\"background:var(--sky)\"></i><b>English</b></span><span><i class=\"dot\" style=\"background:var(--flag)\"></i><b>Deutsch</b></span><span><i class=\"dot\" style=\"background:var(--berry)\"></i><b>Español</b></span><span><i class=\"dot\" style=\"background:var(--mut2)\"></i>+ 10 weitere Sprachen geplant</span>",
- lnote:"Jeder Begriff — <span style=\"color:var(--fg)\">gleich in fünf Sprachen</span>: auf dem Platz auf Portugiesisch gehört, in deiner Sprache verstanden, das internationale Wort gelernt. Neue Sprache in Birdie = neues Wörterbuch, keine neue App.",
- sec4:"Vier Stufen — starte mit der kostenlosen",
- s1pt:"// App · gratis · offline",s1h:"Öffne Birdie direkt auf dem Platz",
- s1s:"Begriffe, Schläge, Fragen & Antworten, Regeln und Etikette — in fünf Sprachen. <b>Link öffnen — zum Startbildschirm hinzufügen — läuft ohne Internet.</b> Du zahlst nichts.",
- s1b:"Birdie öffnen →",
- s2pt:"// Spur der Stunde · Top-up · einmalig",s2h:"Deine Stunde — in dein Gedächtnis",
- s2s:"Schick nach der Stunde ein paar Zeilen: was klappte, was dich überraschte, wohin der Ball flog. <b>Ich baue 5–7 Begriffe des Tages mit deinen emotionalen Ankern</b> — für immer deine.",
- s2a:"einmalig",s2b:"Spur der Stunde bestellen",
- s3pt:"// Einmalkauf · <span style=\"color:var(--sky)\">−50% für die ersten 100</span>",s3h:"Birdie für immer",
- s3s:"Autorenkurse, volles Glossar, Schläge mit Analyse, deine Anker. Offline, Fortschritt auf deinem Gerät.",
- s3a:"· für immer",s3b:"Mit Rabatt sichern",
- s4pt:"// Birdie-Club",s4lk:"mit dem Gruppencode",s4h:"Gemeinsamer Raum und Partner-Aktionen",
- s4s:"Fragen an Gruppe und Trainer — Antworten bleiben für alle. <b>Gemeinsamer Raum der Gruppe, Turnier Schritt für Schritt mit Birdie</b>, Aktionen von Plätzen und Partnern.",
- s4a:"mit Kurs",s4b:"Mit Code eintreten",
- honest:"<b>Ehrlich:</b> Birdie ist im Pilot auf einem Golfkurs auf Madeira. Gemeinsamer Raum und Abo sind Version 1.5 — sie kommen in den nächsten Wochen."
-},
-es:{
- count_lbl:"// piloto · curso de golfe na Madeira",
- count_note:"cada clase alimenta la base — <b>Birdie se vuelve más listo con cada campo</b>",
- h1:"La clase de golf es en portugués.<br>Birdie la traduce a <span class=\"em\">tu idioma.</span>",
- punch:"El entrenador lo dijo — tú <span class=\"em\">lo entendiste y lo recuerdas</span>. 73 términos, 7 golpes, respuestas a las preguntas de todo el grupo — en cualquiera de cinco idiomas, en el bolsillo, sin conexión.",
- lede:"<b>Ábrelo en pleno campo</b> — encuentra el término — mira cómo se hace el golpe — haz tu pregunta. La mitad del vocabulario del golf es internacional: la barrera cae en la primera clase.",
- hero:"→ abrir Birdie — gratis · funciona sin conexión",
- sec1:"Por qué se queda — psicología, no memorización",
- c1l:"huella de la clase",c1h:"La emoción del momento = ancla",
- c1p:"Después de la clase — 5–7 términos del día <b>con tu emoción del momento</b>: «la bola se fue a la derecha — eso es un slice». La historia personal pega la palabra para siempre.",
- c2l:"sala común",c2h:"Uno pregunta — todos lo saben",
- c2p:"Tu pregunta y la respuesta del entrenador quedan en la base del curso. <b>Cada grupo nuevo empieza con la experiencia de todos los anteriores.</b>",
- c3l:"verificado por el entrenador ⚑",c3h:"Confianza en vez de google",
- c3p:"La técnica de los golpes y los términos portugueses están verificados por el instructor del campo. La bandera ⚑ significa: <b>así se dice y se hace aquí</b>.",
- c4l:"vuelo de la bola",c4h:"Entiende tu golpe",
- c4p:"Draw, fade, slice, hook — ves <b>qué pasó con la bola y por qué</b>. Análisis del vuelo en tu idioma, allí mismo en el campo.",
- sec2:"No eres un extraño en el campo — estilo y club",
- cl1h:"Vestido al estilo del golf",
- cl1p:"Código de vestimenta y etiqueta sin apuros: <b>qué ponerte, cómo actuar</b>. Guía de estilo — del polo a los soft spikes — en tu idioma.",
- cl2h:"Promos de campos y socios",
- cl2p:"Descuentos para alumnos del curso: <b>green fees del campo del curso, equipo, tiendas asociadas</b>. Las ofertas llegan a Birdie — con el código de tu grupo.",
- sec3:"Cinco idiomas — diez más en camino",
- legend:"<span><i class=\"dot\" style=\"background:var(--green)\"></i><b>Português</b></span><span><i class=\"dot\" style=\"background:var(--sand)\"></i><b>Русский</b></span><span><i class=\"dot\" style=\"background:var(--sky)\"></i><b>English</b></span><span><i class=\"dot\" style=\"background:var(--flag)\"></i><b>Deutsch</b></span><span><i class=\"dot\" style=\"background:var(--berry)\"></i><b>Español</b></span><span><i class=\"dot\" style=\"background:var(--mut2)\"></i>+ 10 idiomas más en plan</span>",
- lnote:"Cada término — <span style=\"color:var(--fg)\">en cinco idiomas a la vez</span>: lo oíste en el campo en portugués, lo entendiste en tu idioma, conociste la palabra internacional. Nuevo idioma en Birdie = nuevo diccionario, no nueva aplicación.",
- sec4:"Cuatro escalones — empieza por el gratis",
- s1pt:"// aplicación · gratis · sin conexión",s1h:"Abre Birdie en pleno campo",
- s1s:"Términos, golpes, preguntas y respuestas, reglas y etiqueta — en cinco idiomas. <b>Abres el enlace — lo añades a la pantalla — funciona sin internet.</b> No pagas nada.",
- s1b:"Abrir Birdie →",
- s2pt:"// huella de la clase · top-up · pago único",s2h:"Tu clase — a tu memoria",
- s2s:"Después de la clase envía unas líneas: qué salió bien, qué te sorprendió, adónde voló la bola. <b>Armo 5–7 términos del día con tus anclas emocionales</b> — tuyos para siempre.",
- s2a:"único",s2b:"Pedir la huella de la clase",
- s3pt:"// compra única · <span style=\"color:var(--sky)\">−50% para los primeros 100</span>",s3h:"Birdie para siempre",
- s3s:"Cursos de autor, glosario completo, golpes con análisis, tus anclas. Sin conexión, progreso en tu dispositivo.",
- s3a:"· para siempre",s3b:"Llevar con descuento",
- s4pt:"// club birdie",s4lk:"con el código del grupo",s4h:"Sala común y promos de socios",
- s4s:"Preguntas al grupo y al entrenador, respuestas que quedan para todos + descuentos de campos y tiendas asociadas. <b>Gratis para alumnos del curso de golfe.</b>",
- s4a:"con el curso",s4b:"Entrar con código",
- honest:"<b>Sinceramente:</b> Birdie está en piloto en un curso de golf en Madeira. La sala común y la suscripción son la versión 1.5 — llegan en las próximas semanas."
+const HUB='https://ikartuzov-hub.github.io/seedwave-catalog/hub/';
+const APP='https://ikartuzov-hub.github.io/birdie/';
+const LANGS=['ru','pt','en','de','es'];
+const DEFAULT='ru';
+const content=document.getElementById('content');
+const langCode=document.getElementById('langCode');
+const hubLink=document.getElementById('hubLink');
+const themeBtn=document.getElementById('themeBtn');
+const RU_INLINE=content.innerHTML;
+const qs=new URLSearchParams(location.search);
+
+function isDay(t){return t==='day'||t==='light';}
+let theme=qs.get('theme');
+if(theme==null){ try{theme=localStorage.getItem('birdie_theme');}catch(e){} }
+theme=isDay(theme)?'day':'night';
+function applyTheme(t){
+  document.documentElement.setAttribute('data-theme', t==='day'?'light':'night');
+  themeBtn.textContent = t==='day' ? '☾' : '☀';
 }
-};
-const RU_BASE = {};
-document.querySelectorAll('[data-i18n]').forEach(el=>{ RU_BASE[el.dataset.i18n]=el.innerHTML; });
-I18N.ru = RU_BASE;
-function setLang(l){
-  const d = I18N[l] || I18N.ru;
-  document.querySelectorAll('[data-i18n]').forEach(el=>{
-    const k = el.dataset.i18n;
-    el.innerHTML = (d[k] !== undefined) ? d[k] : RU_BASE[k];
+
+let lang=qs.get('lang');
+if(!LANGS.includes(lang)){ try{lang=localStorage.getItem('birdie_flyer_lang');}catch(e){} }
+if(!LANGS.includes(lang)) lang=DEFAULT;
+
+function wire(){
+  document.querySelectorAll('#content [data-href]').forEach(a=>{
+    const k=a.dataset.href;
+    if(k==='app') a.href=APP+'?lang='+lang+'&theme='+theme;
+    else if(k==='hub') a.href=HUB+'?lang='+lang;
   });
-  document.documentElement.lang = l;
-  document.getElementById('langCode').textContent = l.toUpperCase();
-  document.querySelectorAll('.langitem').forEach(b=>b.classList.toggle('on', b.dataset.lang===l));
-  document.getElementById('hubLink').href = 'https://ikartuzov-hub.github.io/seedwave-catalog/hub/?lang='+l;
-  try{ localStorage.setItem('birdie_flyer_lang', l); }catch(e){}
+  hubLink.href=HUB+'?lang='+lang;
 }
-const btn = document.getElementById('langBtn'), menu = document.getElementById('langMenu');
+
+async function setLang(l){
+  if(!LANGS.includes(l)) l=DEFAULT;
+  if(l===DEFAULT){ content.innerHTML=RU_INLINE; lang=l; }
+  else{
+    try{
+      const r=await fetch('pages/flyer.'+l+'.html',{cache:'no-cache'});
+      if(!r.ok) throw 0;
+      content.innerHTML=await r.text(); lang=l;
+    }catch(e){ content.innerHTML=RU_INLINE; lang=DEFAULT; }
+  }
+  document.documentElement.lang=lang;
+  langCode.textContent=lang.toUpperCase();
+  document.querySelectorAll('.langitem').forEach(b=>b.classList.toggle('on', b.dataset.lang===lang));
+  try{localStorage.setItem('birdie_flyer_lang',lang);}catch(e){}
+  wire();
+}
+
+const btn=document.getElementById('langBtn'), menu=document.getElementById('langMenu');
 btn.addEventListener('click', e=>{ e.stopPropagation(); menu.classList.toggle('open'); });
 document.addEventListener('click', ()=>menu.classList.remove('open'));
 menu.querySelectorAll('.langitem').forEach(b=>b.addEventListener('click', ()=>{ setLang(b.dataset.lang); menu.classList.remove('open'); }));
-(function(){
-  let l = new URLSearchParams(location.search).get('lang');
-  if(!l){ try{ l = localStorage.getItem('birdie_flyer_lang'); }catch(e){} }
-  if(l && I18N[l]) setLang(l);
-})();
+themeBtn.addEventListener('click', ()=>{
+  theme = (theme==='day') ? 'night' : 'day';
+  applyTheme(theme);
+  try{localStorage.setItem('birdie_theme',theme);}catch(e){}
+  wire();
+});
+
+applyTheme(theme);
+setLang(lang);
 </script>
 </body>
 </html>
