@@ -5,6 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Birdie — метод</title>
+<link rel="manifest" href="app.webmanifest">
 <meta name="theme-color" content="#0E3B2E">
 <link rel="icon" href="icon.svg?v=2" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon.svg?v=2">
@@ -24,7 +25,6 @@
   html{-webkit-text-size-adjust:100%}
   body{background:var(--bg);color:var(--ink);font-family:'Manrope',system-ui,sans-serif;line-height:1.6;padding:0 18px 60px;transition:background .4s,color .4s}
   .brandmark{position:fixed;top:13px;left:16px;width:24px;height:24px;z-index:10}
-  .themebtn{position:fixed;top:12px;right:16px;z-index:10;background:none;border:1px solid transparent;color:var(--ink-soft);font-size:16px;padding:6px 9px;border-radius:999px;cursor:pointer}
   .wrap{max-width:640px;margin:0 auto}
   .crumb{font-size:11.5px;letter-spacing:.04em;color:var(--ink-soft);padding:46px 2px 0}
   .crumb a{color:var(--accent);text-decoration:none}
@@ -51,11 +51,35 @@
   @keyframes rise{to{opacity:1;transform:none}}
   @media(prefers-reduced-motion:reduce){.reveal{animation:none;opacity:1;transform:none}}
   @media(max-width:430px){h1{font-size:26px}}
+  .topctrl{position:fixed;top:12px;right:14px;z-index:10;display:flex;align-items:center;gap:8px}
+  .cbtn{width:36px;height:36px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;
+    border:1px solid var(--ink-soft);background:transparent;color:var(--ink);cursor:pointer;
+    font-size:12px;font-weight:600;letter-spacing:.02em;line-height:1;font-family:inherit;
+    transition:border-color .2s,color .2s,transform .15s}
+  .cbtn:hover{border-color:var(--accent);color:var(--accent)}
+  .cbtn:active{transform:scale(.92)}
+  .langwrap{position:relative}
+  .langmenu{position:absolute;top:calc(100% + 8px);right:0;min-width:168px;background:var(--bg);
+    border:1px solid var(--line);border-radius:14px;padding:6px;display:none;flex-direction:column;z-index:60;
+    box-shadow:0 10px 28px rgba(0,0,0,.28)}
+  .langmenu.open{display:flex}
+  .langmenu button{display:flex;align-items:center;gap:8px;background:transparent;border:none;color:var(--ink-soft);
+    text-align:left;padding:9px 11px;border-radius:9px;font-family:inherit;font-size:14px;cursor:pointer}
+  .langmenu button:hover{background:rgba(127,127,127,.12);color:var(--ink)}
+  .langmenu button.on{color:var(--accent)}
+  .langmenu .lc{display:inline-block;width:26px;font-weight:600;font-size:12px;letter-spacing:.04em;color:var(--ink-soft)}
+  .langmenu button.on .lc{color:var(--accent)}
 </style>
 </head>
 <body>
 <svg class="brandmark" viewBox="0 0 100 100" fill="none" stroke="var(--accent)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" aria-label="Birdie"><path d="M33 16 L33 72"/><path d="M33 16 C57 16 57 42 35 43 C59 44 59 72 33 72"/><path d="M20 86 Q30 80 40 86 Q50 92 60 86 Q70 80 80 86"/></svg>
-<button id="themeBtn" class="themebtn" aria-label="Сменить тему">☀</button>
+<div class="topctrl">
+  <div class="langwrap">
+    <button class="cbtn" id="langBtn" aria-haspopup="true" aria-expanded="false" aria-label="Язык"><span id="langCode">RU</span></button>
+    <div class="langmenu" id="langmenu"></div>
+  </div>
+  <button id="themeBtn" class="cbtn" aria-label="Сменить тему">☀</button>
+</div>
 <div class="wrap" id="app"></div>
 <script>
 (function(){
@@ -110,7 +134,11 @@
   };
   if(!L[lang]) lang = "en";
   const t = L[lang];
-  const withLang = u => u + (u.includes("?")?"&":"?") + "lang=" + lang;
+  let theme = qs.get("theme");
+  if(!theme){ try{theme=localStorage.getItem("birdie_theme");}catch(e){} }
+  if(!theme){ theme = (window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"night"; }
+  theme = (theme==="light"||theme==="day") ? "light" : "night";
+  const withLang = u => u + (u.includes("?")?"&":"?") + "lang=" + lang + "&theme=" + theme;
   const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
   document.documentElement.lang = lang;
   const blocks = t.blocks.map(b=>`
@@ -131,14 +159,23 @@
     </div>
     <div class="foot reveal">
       <a href="${esc(withLang(APP))}">${esc(t.footApp)}</a>
-      <span>© 2026 <a href="${esc(withLang(HUB))}">SeedWave</a> · <a href="${LINKEDIN}" target="_blank" rel="noopener">${esc(t.footName)}</a></span>
+      <span>© ${new Date().getFullYear()} <a href="${esc(withLang(HUB))}">SeedWave</a> · <a href="${LINKEDIN}" target="_blank" rel="noopener">${esc(t.footName)}</a></span>
     </div>`;
   // тема день/ночь
   const root=document.documentElement, tb=document.getElementById("themeBtn");
-  function setTheme(x){ if(x==="light"){root.setAttribute("data-theme","light");tb.textContent="☾";} else {root.removeAttribute("data-theme");tb.textContent="☀";} }
-  let saved; try{saved=localStorage.getItem("birdie_theme");}catch(e){}
-  setTheme(saved|| (qs.get("theme")) || (window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"));
-  tb.onclick=function(){ const now=root.getAttribute("data-theme")==="light"?"dark":"light"; setTheme(now); try{localStorage.setItem("birdie_theme",now);}catch(e){} };
+  function setTheme(x){ theme=(x==="light")?"light":"night"; root.setAttribute("data-theme",theme); tb.textContent=(theme==="light")?"☾":"☀"; }
+  setTheme(theme);
+  tb.onclick=function(){ const now=(theme==="light")?"night":"light"; setTheme(now); try{localStorage.setItem("birdie_theme",now);}catch(e){} };
+
+  // меню языка §7.8.1
+  const NAMES={ru:"Русский",pt:"Português",en:"English"};
+  const lb=document.getElementById("langBtn"), lm=document.getElementById("langmenu"), lc=document.getElementById("langCode");
+  lc.textContent=lang.toUpperCase();
+  lm.innerHTML=Object.keys(L).map(c=>`<button data-lang="${c}"${c===lang?' class="on"':''}><span class="lc">${c.toUpperCase()}</span>${NAMES[c]||c}</button>`).join("");
+  function closeLang(){ lm.classList.remove("open"); lb.setAttribute("aria-expanded","false"); }
+  lb.addEventListener("click",function(e){ e.stopPropagation(); const o=lm.classList.toggle("open"); lb.setAttribute("aria-expanded",o?"true":"false"); });
+  document.addEventListener("click",closeLang);
+  lm.querySelectorAll("button").forEach(function(b){ b.addEventListener("click",function(){ const c=b.dataset.lang; if(c===lang){closeLang();return;} const u=new URL(location.href); u.searchParams.set("lang",c); u.searchParams.set("theme",theme); location.href=u.toString(); }); });
 })();
 </script>
 </body>

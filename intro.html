@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Birdie</title>
+<link rel="manifest" href="app.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
@@ -33,18 +34,23 @@
   }
   @media(prefers-reduced-motion:reduce){.brandmark{animation:none}}
   .topctrl{position:fixed;top:12px;right:14px;z-index:10;display:flex;align-items:center;gap:8px}
-  .themebtn{
-    background:none;border:1px solid transparent;color:var(--dim);
-    font-size:16px;line-height:1;padding:6px 9px;border-radius:999px;cursor:pointer;
-  }
-  .themebtn:active{transform:scale(.95)}
-  .langbar{display:flex;gap:6px}
-  .langbar button{
-    background:none;border:1px solid transparent;color:var(--dim);
-    font-size:12px;letter-spacing:.08em;padding:5px 8px;border-radius:999px;
-    cursor:pointer;text-transform:uppercase;
-  }
-  .langbar button.on{color:var(--accent);border-color:var(--accent)}
+  .cbtn{width:36px;height:36px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;
+    border:1px solid var(--dim);background:transparent;color:var(--ink);cursor:pointer;
+    font-size:12px;font-weight:600;letter-spacing:.02em;line-height:1;font-family:inherit;
+    transition:border-color .2s,color .2s,transform .15s}
+  .cbtn:hover{border-color:var(--accent);color:var(--accent)}
+  .cbtn:active{transform:scale(.92)}
+  .langwrap{position:relative}
+  .langmenu{position:absolute;top:calc(100% + 8px);right:0;min-width:168px;background:var(--bg);
+    border:1px solid var(--dim);border-radius:14px;padding:6px;display:none;flex-direction:column;z-index:60;
+    box-shadow:0 10px 28px rgba(0,0,0,.28)}
+  .langmenu.open{display:flex}
+  .langmenu button{display:flex;align-items:center;gap:8px;background:transparent;border:none;color:var(--dim);
+    text-align:left;padding:9px 11px;border-radius:9px;font-family:inherit;font-size:14px;cursor:pointer}
+  .langmenu button:hover{background:rgba(141,127,112,.14);color:var(--ink)}
+  .langmenu button.on{color:var(--accent)}
+  .langmenu .lc{display:inline-block;width:26px;font-weight:600;font-size:12px;letter-spacing:.04em;color:var(--dim)}
+  .langmenu button.on .lc{color:var(--accent)}
 
   main{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:24px;text-align:center}
   .step{display:none;flex-direction:column;align-items:center;gap:34px;max-width:560px;width:100%}
@@ -77,8 +83,11 @@
 
 <svg class="brandmark" viewBox="0 0 100 100" fill="none" stroke="var(--accent)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" aria-label="Birdie"><path d="M33 16 L33 72"/><path d="M33 16 C57 16 57 42 35 43 C59 44 59 72 33 72"/><path d="M20 86 Q30 80 40 86 Q50 92 60 86 Q70 80 80 86"/></svg>
 <div class="topctrl">
-  <button id="themeBtn" class="themebtn" aria-label="Сменить тему">☀</button>
-  <nav class="langbar" id="langbar" aria-label="Language"></nav>
+  <div class="langwrap">
+    <button class="cbtn" id="langBtn" aria-haspopup="true" aria-expanded="false" aria-label="Язык"><span id="langCode">RU</span></button>
+    <div class="langmenu" id="langmenu"></div>
+  </div>
+  <button class="cbtn" id="themeBtn" aria-label="Сменить тему">☀</button>
 </div>
 
 <main>
@@ -103,11 +112,10 @@
 </main>
 
 <footer>
-  © <a id="authorLink" href="#" target="_blank" rel="noopener">Igor Kartuzov</a>
-  <span> · </span>
+  © <span id="yr"></span>
   <a id="hubLink" href="#" target="_blank" rel="noopener">SeedWave</a>
   <span> · </span>
-  <span style="opacity:.55">birdie v4</span>
+  <a id="authorLink" href="#" target="_blank" rel="noopener">Igor Kartuzov</a>
 </footer>
 
 <script>
@@ -124,7 +132,7 @@ const LOCALES = {
     yes:"Да, это про меня", listen:"🔊 Послушать", again:"🔊 Ещё раз",
     wow:"Так звучит твой урок. Birdie переводит его на твой язык.",
     next:"Дальше",
-    pitch:"Birdie — ассистент гольф-урока. Термины, удары, вопросы тренеру — на твоём языке. 5 языков, один урок для всех.",
+    pitch:"Birdie — ассистент гольф-урока. Термины, удары, вопросы тренеру — на твоём языке. 3 языка, один урок для всех.",
     tryIt:"Открыть Birdie", more:"Узнать больше"},
     phrase:{text:"Bola a voar!",translation:"«Мяч в полёте!»",voice:"pt-PT"}},
   en:{dir:"ltr",ui:{
@@ -132,7 +140,7 @@ const LOCALES = {
     yes:"Yes, that's me", listen:"🔊 Listen", again:"🔊 Once more",
     wow:"That's how your lesson sounds. Birdie translates it into your language.",
     next:"Next",
-    pitch:"Birdie is your golf-lesson assistant. Terms, shots, questions to the coach — in your language. 5 languages, one lesson for everyone.",
+    pitch:"Birdie is your golf-lesson assistant. Terms, shots, questions to the coach — in your language. 3 languages, one lesson for everyone.",
     tryIt:"Open Birdie", more:"Learn more"},
     phrase:{text:"Bola a voar!",translation:"\u201CBall in flight!\u201D",voice:"pt-PT"}},
   pt:{dir:"ltr",ui:{
@@ -140,25 +148,9 @@ const LOCALES = {
     yes:"Sim, dou", listen:"🔊 Ouvir", again:"🔊 Outra vez",
     wow:"É assim que o teu aluno te ouve — na língua dele. O Birdie traduz a aula.",
     next:"Continuar",
-    pitch:"Birdie é o assistente da aula de golfe. Termos, pancadas, perguntas — em 5 línguas. Uma aula para todos.",
+    pitch:"Birdie é o assistente da aula de golfe. Termos, pancadas, perguntas — em 3 línguas. Uma aula para todos.",
     tryIt:"Abrir o Birdie", more:"Saber mais"},
-    phrase:{text:"Мяч в полёте!",translation:"«Bola a voar!»",voice:"ru-RU"}},
-  es:{dir:"ltr",ui:{
-    hook:"¿Clase de golf en portugués — y no hablas portugués?",
-    yes:"Sí, soy yo", listen:"🔊 Escuchar", again:"🔊 Otra vez",
-    wow:"Así suena tu clase. Birdie la traduce a tu idioma.",
-    next:"Siguiente",
-    pitch:"Birdie es tu asistente de clase de golf. Términos, golpes, preguntas al entrenador — en tu idioma. 5 idiomas, una clase para todos.",
-    tryIt:"Abrir Birdie", more:"Saber más"},
-    phrase:{text:"Bola a voar!",translation:"«¡Pelota en vuelo!»",voice:"pt-PT"}},
-  de:{dir:"ltr",ui:{
-    hook:"Golfstunde auf Portugiesisch — und du sprichst kein Portugiesisch?",
-    yes:"Ja, genau ich", listen:"🔊 Anhören", again:"🔊 Noch einmal",
-    wow:"So klingt deine Golfstunde. Birdie übersetzt sie in deine Sprache.",
-    next:"Weiter",
-    pitch:"Birdie ist dein Assistent für die Golfstunde. Begriffe, Schläge, Fragen an den Trainer — in deiner Sprache. 5 Sprachen, eine Stunde für alle.",
-    tryIt:"Birdie öffnen", more:"Mehr erfahren"},
-    phrase:{text:"Bola a voar!",translation:"\u201EBall im Flug!\u201C",voice:"pt-PT"}}
+    phrase:{text:"Мяч в полёте!",translation:"«Bola a voar!»",voice:"ru-RU"}}
 };
 
 /* ===== ДВИЖОК ===== */
@@ -167,18 +159,24 @@ let lang=params.get("lang");
 if(!LOCALES[lang]){const nav=(navigator.language||"ru").slice(0,2).toLowerCase();lang=LOCALES[nav]?nav:"ru";}
 let L=LOCALES[lang];
 const $=id=>document.getElementById(id);
-let theme=params.get("theme")==="light"?"light":"dark";
+let theme=params.get("theme")==="light"?"light":"night";
 const withNav=u=>u+(u.includes("?")?"&":"?")+"lang="+lang+"&theme="+theme;
 
-function buildLangbar(){
-  const bar=$("langbar");bar.innerHTML="";
+const LANG_NAMES={ru:"Русский",pt:"Português",en:"English"};
+function closeLang(){const m=$("langmenu");if(m){m.classList.remove("open");$("langBtn").setAttribute("aria-expanded","false");}}
+function buildLangMenu(){
+  const box=$("langmenu");box.innerHTML="";
   Object.keys(LOCALES).forEach(code=>{
     const b=document.createElement("button");
-    b.textContent=code;
-    if(code===lang)b.classList.add("on");
-    b.onclick=function(){const u=new URL(location.href);u.searchParams.set("lang",code);u.searchParams.set("theme",theme);location.href=u.toString();};
-    bar.appendChild(b);
+    if(code===lang)b.className="on";
+    b.innerHTML='<span class="lc">'+code.toUpperCase()+'</span>'+(LANG_NAMES[code]||code);
+    b.onclick=function(){
+      if(code===lang){closeLang();return;}
+      const u=new URL(location.href);u.searchParams.set("lang",code);u.searchParams.set("theme",theme);location.href=u.toString();
+    };
+    box.appendChild(b);
   });
+  const lc=$("langCode");if(lc)lc.textContent=lang.toUpperCase();
 }
 function applyLocale(){
   document.documentElement.lang=lang;
@@ -276,18 +274,20 @@ function enterS3(){
   });
 }
 
-buildLangbar();applyLocale();
+buildLangMenu();applyLocale();
+$("yr").textContent=new Date().getFullYear();
+$("langBtn").addEventListener("click",function(e){e.stopPropagation();const m=$("langmenu");const open=m.classList.toggle("open");this.setAttribute("aria-expanded",open?"true":"false");});
+document.addEventListener("click",function(e){const w=$("langBtn").closest(".langwrap");if(w&&!w.contains(e.target))closeLang();});
 
-/* ---- ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ (старт тёмная) ---- */
+/* ---- ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ (старт ночь) ---- */
 function setTheme(t){
-  theme=t;
-  if(t==="light")document.documentElement.setAttribute("data-theme","light");
-  else document.documentElement.removeAttribute("data-theme");
-  $("themeBtn").textContent=(t==="light")?"☾":"☀";
+  theme=(t==="light")?"light":"night";
+  document.documentElement.setAttribute("data-theme",theme);
+  $("themeBtn").textContent=(theme==="light")?"☾":"☀";
   $("hubLink").href=withNav(HUB_URL);
 }
 setTheme(theme);
-$("themeBtn").onclick=function(){ setTheme(theme==="dark"?"light":"dark"); };
+$("themeBtn").onclick=function(){ setTheme(theme==="light"?"night":"light"); };
 
 $("btnYes").onclick=enterS2;
 $("btnListen").onclick=speak;

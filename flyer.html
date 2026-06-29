@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Birdie — гольф понятен на твоём языке</title>
+<link rel="manifest" href="app.webmanifest">
 <meta name="description" content="Birdie — гольф-ассистент: термины, удары, правила и этикет на пяти языках. Открыл на поле, понял тренера, запомнил. Бесплатно, офлайн.">
 <link rel="icon" href="icon.svg?v=2" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon.svg?v=2">
@@ -47,25 +48,24 @@
   .stat{color:var(--mut);font-size:12px}
   .stat b{color:var(--ink);font-weight:500}
 
-  .themebtn{background:var(--bg3);border:1px solid var(--line2);border-radius:8px;width:31px;height:30px;
-    color:var(--ink);font-size:15px;cursor:pointer;line-height:1;transition:transform .16s ease,border-color .16s ease}
-  .themebtn:hover{transform:translateY(-1px) scale(1.05);border-color:var(--accent)}
 
   .langsel{position:relative}
-  .langbtn{display:flex;align-items:center;gap:7px;background:var(--bg3);border:1px solid var(--line2);
-    border-radius:8px;padding:5px 11px;color:var(--ink);font-family:var(--mono);font-size:13px;
-    cursor:pointer;transition:transform .16s ease,border-color .16s ease}
-  .langbtn:hover{transform:translateY(-1px) scale(1.05);border-color:var(--accent)}
-  .globe{display:inline-block;line-height:0;animation:gspin 1.6s ease .4s 1 both}
-  .langbtn:hover .globe{animation:gspin 1.2s ease infinite}
-  @keyframes gspin{0%{transform:rotate(0deg) scale(1)}50%{transform:rotate(180deg) scale(1.12)}100%{transform:rotate(360deg) scale(1)}}
-  .langmenu{position:absolute;right:0;top:calc(100% + 6px);background:var(--bg3);
-    border:1px solid var(--line2);border-radius:9px;padding:5px;display:none;z-index:9;min-width:160px}
+  .cbtn{width:36px;height:36px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;
+    border:1px solid var(--line2);background:transparent;color:var(--ink);cursor:pointer;
+    font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.02em;line-height:1;
+    transition:border-color .18s ease,color .18s ease,transform .15s ease}
+  .cbtn:hover{border-color:var(--accent);color:var(--accent)}
+  .cbtn:active{transform:scale(.92)}
+  .langmenu{position:absolute;right:0;top:calc(100% + 8px);background:var(--bg3);
+    border:1px solid var(--line2);border-radius:14px;padding:6px;display:none;z-index:60;min-width:168px;
+    box-shadow:0 10px 28px rgba(0,0,0,.3)}
   .langmenu.open{display:block}
-  .langitem{display:block;width:100%;text-align:left;background:none;border:none;cursor:pointer;
-    color:var(--ink);font-family:var(--ui);font-size:14px;padding:8px 12px;border-radius:6px}
-  .langitem:hover{background:var(--bg2);color:var(--accent)}
+  .langitem{display:flex;align-items:center;gap:8px;width:100%;text-align:left;background:none;border:none;cursor:pointer;
+    color:var(--mut);font-family:var(--ui);font-size:14px;padding:9px 11px;border-radius:9px}
+  .langitem:hover{background:var(--bg2);color:var(--ink)}
   .langitem.on{color:var(--accent)}
+  .langitem .lc{display:inline-block;width:26px;font-family:var(--mono);font-weight:600;font-size:12px;letter-spacing:.04em;color:var(--mut)}
+  .langitem.on .lc{color:var(--accent)}
 
   .count{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:10px 34px;
     background:var(--bg2);border-bottom:1px solid var(--line)}
@@ -103,8 +103,8 @@
   .card p{font-size:13.5px;color:var(--mut)}
   .card p b{color:var(--ink);font-weight:600}
 
-  .langbar{display:flex;height:9px;border-radius:6px;overflow:hidden;margin-bottom:11px;border:1px solid var(--line)}
-  .langbar span{display:block}
+  .langstripe{display:flex;height:9px;border-radius:6px;overflow:hidden;margin-bottom:11px;border:1px solid var(--line)}
+  .langstripe span{display:block}
   .langlegend{display:flex;flex-wrap:wrap;gap:9px 16px;font-size:13px;color:var(--mut)}
   .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:-1px}
   .langlegend b{color:var(--ink);font-weight:600}
@@ -174,7 +174,7 @@
   @media print{
     body{background:#fff;padding:0;color:#111}
     .page{border:none;border-radius:0;width:auto}
-    .langsel,.themebtn{display:none}
+    .langsel,#themeBtn{display:none}
     @page{size:A4;margin:8mm}
   }
 </style>
@@ -196,25 +196,15 @@
     <span class="pill">Public</span>
     <span class="spacer"></span>
     <span class="stat">⛳ <b>golf · Madeira</b></span>
-    <button class="themebtn" id="themeBtn" aria-label="Сменить тему">☀</button>
     <div class="langsel">
-      <button class="langbtn" id="langBtn" aria-label="Сменить язык">
-        <span class="globe">
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.7" stroke-linecap="round">
-            <circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3.5 9h17M3.5 15h17"/>
-          </svg>
-        </span>
-        <span id="langCode">RU</span>
-        <span style="color:var(--mut2);font-size:10px">&#9662;</span>
-      </button>
+      <button class="cbtn" id="langBtn" aria-haspopup="true" aria-expanded="false" aria-label="Сменить язык"><span id="langCode">RU</span></button>
       <div class="langmenu" id="langMenu">
-        <button class="langitem on" data-lang="ru">🇷🇺 Русский</button>
-        <button class="langitem" data-lang="pt">🇵🇹 Português</button>
-        <button class="langitem" data-lang="en">🇬🇧 English</button>
-        <button class="langitem" data-lang="de">🇩🇪 Deutsch</button>
-        <button class="langitem" data-lang="es">🇪🇸 Español</button>
+        <button class="langitem on" data-lang="ru"><span class="lc">RU</span>Русский</button>
+        <button class="langitem" data-lang="pt"><span class="lc">PT</span>Português</button>
+        <button class="langitem" data-lang="en"><span class="lc">EN</span>English</button>
       </div>
     </div>
+    <button class="cbtn" id="themeBtn" aria-label="Сменить тему">☀</button>
   </div>
 
   <div id="content">
@@ -258,7 +248,7 @@
 
 <div class="pad">
   <div class="sec-h sk">Пять языков — скоро ещё десять</div>
-  <div class="langbar">
+  <div class="langstripe">
     <span style="width:20%;background:var(--c1)"></span>
     <span style="width:20%;background:var(--c2)"></span>
     <span style="width:20%;background:var(--c3)"></span>
@@ -349,7 +339,7 @@
 <script>
 const HUB='https://ikartuzov-hub.github.io/seedwave-catalog/hub/';
 const APP='https://ikartuzov-hub.github.io/birdie/';
-const LANGS=['ru','pt','en','de','es'];
+const LANGS=['ru','pt','en'];
 const DEFAULT='ru';
 const content=document.getElementById('content');
 const langCode=document.getElementById('langCode');
@@ -361,10 +351,10 @@ const qs=new URLSearchParams(location.search);
 function isDay(t){return t==='day'||t==='light';}
 let theme=qs.get('theme');
 if(theme==null){ try{theme=localStorage.getItem('birdie_theme');}catch(e){} }
-theme=isDay(theme)?'day':'night';
+theme=isDay(theme)?'light':'night';
 function applyTheme(t){
-  document.documentElement.setAttribute('data-theme', t==='day'?'light':'night');
-  themeBtn.textContent = t==='day' ? '☾' : '☀';
+  document.documentElement.setAttribute('data-theme', t==='light'?'light':'night');
+  themeBtn.textContent = t==='light' ? '☾' : '☀';
 }
 
 let lang=qs.get('lang');
@@ -375,9 +365,9 @@ function wire(){
   document.querySelectorAll('#content [data-href]').forEach(a=>{
     const k=a.dataset.href;
     if(k==='app') a.href=APP+'?lang='+lang+'&theme='+theme;
-    else if(k==='hub') a.href=HUB+'?lang='+lang;
+    else if(k==='hub') a.href=HUB+'?lang='+lang+'&theme='+theme;
   });
-  hubLink.href=HUB+'?lang='+lang;
+  hubLink.href=HUB+'?lang='+lang+'&theme='+theme;
 }
 
 async function setLang(l){
@@ -398,11 +388,11 @@ async function setLang(l){
 }
 
 const btn=document.getElementById('langBtn'), menu=document.getElementById('langMenu');
-btn.addEventListener('click', e=>{ e.stopPropagation(); menu.classList.toggle('open'); });
-document.addEventListener('click', ()=>menu.classList.remove('open'));
+btn.addEventListener('click', e=>{ e.stopPropagation(); const o=menu.classList.toggle('open'); btn.setAttribute('aria-expanded',o?'true':'false'); });
+document.addEventListener('click', ()=>{ menu.classList.remove('open'); btn.setAttribute('aria-expanded','false'); });
 menu.querySelectorAll('.langitem').forEach(b=>b.addEventListener('click', ()=>{ setLang(b.dataset.lang); menu.classList.remove('open'); }));
 themeBtn.addEventListener('click', ()=>{
-  theme = (theme==='day') ? 'night' : 'day';
+  theme = (theme==='light') ? 'night' : 'light';
   applyTheme(theme);
   try{localStorage.setItem('birdie_theme',theme);}catch(e){}
   wire();

@@ -5,6 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Birdie · установка</title>
+<link rel="manifest" href="app.webmanifest">
 <meta name="theme-color" content="#0E3B2E">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icon.svg">
@@ -27,12 +28,24 @@
     padding:calc(58px + env(safe-area-inset-top,0px)) 20px 40px}
   .topbar-bg{position:fixed;top:0;left:0;right:0;height:calc(52px + env(safe-area-inset-top,0px));background:var(--bg);z-index:9;transition:background .4s}
   .brandmark{position:fixed;top:calc(14px + env(safe-area-inset-top,0px));left:18px;width:26px;height:26px;z-index:10}
-  .topctrl{position:fixed;top:calc(15px + env(safe-area-inset-top,0px));right:16px;z-index:10;display:flex;align-items:center;gap:10px}
-  .themebtn{background:none;border:none;color:var(--dim);font-size:16px;cursor:pointer;padding:4px}
-  .langbar{display:flex;gap:5px}
-  .langbar button{background:none;border:1px solid transparent;color:var(--dim);font-size:12px;letter-spacing:.06em;
-    padding:5px 7px;border-radius:999px;cursor:pointer;text-transform:uppercase;font-family:var(--ui)}
-  .langbar button.on{color:var(--accent);border-color:var(--accent)}
+  .topctrl{position:fixed;top:calc(15px + env(safe-area-inset-top,0px));right:16px;z-index:10;display:flex;align-items:center;gap:8px}
+  .cbtn{width:36px;height:36px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;
+    border:1px solid var(--dim);background:transparent;color:var(--ink);cursor:pointer;
+    font-size:12px;font-weight:600;letter-spacing:.02em;line-height:1;font-family:var(--ui);
+    transition:border-color .2s,color .2s,transform .15s}
+  .cbtn:hover{border-color:var(--accent);color:var(--accent)}
+  .cbtn:active{transform:scale(.92)}
+  .langwrap{position:relative}
+  .langmenu{position:absolute;top:calc(100% + 8px);right:0;min-width:168px;background:var(--card);
+    border:1px solid var(--line);border-radius:14px;padding:6px;display:none;flex-direction:column;z-index:60;
+    box-shadow:0 10px 28px rgba(0,0,0,.28)}
+  .langmenu.open{display:flex}
+  .langmenu button{display:flex;align-items:center;gap:8px;background:transparent;border:none;color:var(--dim);
+    text-align:left;padding:9px 11px;border-radius:9px;font-family:var(--ui);font-size:14px;cursor:pointer;text-transform:none;letter-spacing:0}
+  .langmenu button:hover{background:rgba(127,127,127,.12);color:var(--ink)}
+  .langmenu button.on{color:var(--accent)}
+  .langmenu .lc{display:inline-block;width:26px;font-weight:600;font-size:12px;letter-spacing:.04em;color:var(--dim)}
+  .langmenu button.on .lc{color:var(--accent)}
   .wrap{max-width:520px;margin:0 auto}
   h1{font-family:var(--ser);font-weight:600;font-size:clamp(22px,5vw,28px);margin-bottom:6px;text-align:center}
   .lead{text-align:center;color:var(--dim);margin-bottom:26px}
@@ -61,8 +74,11 @@
   </svg>
 </a>
 <div class="topctrl">
-  <button class="themebtn" id="themeBtn" aria-label="theme">☀</button>
-  <div class="langbar" id="langbar"></div>
+  <div class="langwrap">
+    <button class="cbtn" id="langBtn" aria-haspopup="true" aria-expanded="false" aria-label="Язык"><span id="langCode">RU</span></button>
+    <div class="langmenu" id="langmenu"></div>
+  </div>
+  <button class="cbtn" id="themeBtn" aria-label="theme">☀</button>
 </div>
 
 <div class="wrap">
@@ -74,7 +90,7 @@
   </div>
   <div class="panel on" id="panel-ios"><ol id="list-ios"></ol></div>
   <div class="panel" id="panel-android"><ol id="list-android"></ol></div>
-  <footer>© <a href="https://www.linkedin.com/in/igor-kartuzov/" target="_blank" rel="noopener">Igor Kartuzov</a> · <a id="hubLink">SeedWave</a></footer>
+  <footer>© <span id="yr"></span> <a id="hubLink" target="_blank" rel="noopener">SeedWave</a> · <a href="https://www.linkedin.com/in/igor-kartuzov/" target="_blank" rel="noopener">Igor Kartuzov</a></footer>
 </div>
 
 <script>
@@ -89,20 +105,14 @@ const T={
   andSteps:["Abre o link no <b>Chrome</b>","Toca em <b>⋮</b> (três pontos em cima à direita)","Escolhe <b>«Adicionar ao ecrã principal»</b>","Pronto — o ícone Birdie no ecrã"]},
  en:{h1:"Install Birdie on your phone ⛳",lead:"It works like a normal app icon",ios:"iPhone",android:"Android",
   iosSteps:["Open the link in <b>Safari</b>","Tap <b>«Share»</b> (square with ↑ arrow at the bottom)","Choose <b>«Add to Home Screen»</b>","Done — the Birdie icon is on your screen"],
-  andSteps:["Open the link in <b>Chrome</b>","Tap <b>⋮</b> (three dots, top right)","Choose <b>«Add to Home screen»</b>","Done — the Birdie icon is on your screen"]},
- de:{h1:"Installiere Birdie auf dem Handy ⛳",lead:"Wie ein normales App-Symbol",ios:"iPhone",android:"Android",
-  iosSteps:["Öffne den Link in <b>Safari</b>","Tippe auf <b>«Teilen»</b> (Quadrat mit Pfeil ↑ unten)","Wähle <b>«Zum Home-Bildschirm»</b>","Fertig — das Birdie-Symbol ist da"],
-  andSteps:["Öffne den Link in <b>Chrome</b>","Tippe auf <b>⋮</b> (drei Punkte, oben rechts)","Wähle <b>«Zum Startbildschirm hinzufügen»</b>","Fertig — das Birdie-Symbol ist da"]},
- es:{h1:"Instala Birdie en tu móvil ⛳",lead:"Funciona como un icono normal",ios:"iPhone",android:"Android",
-  iosSteps:["Abre el enlace en <b>Safari</b>","Toca <b>«Compartir»</b> (cuadrado con flecha ↑ abajo)","Elige <b>«Añadir a pantalla de inicio»</b>","Listo — el icono de Birdie en tu pantalla"],
-  andSteps:["Abre el enlace en <b>Chrome</b>","Toca <b>⋮</b> (tres puntos, arriba a la derecha)","Elige <b>«Añadir a pantalla de inicio»</b>","Listo — el icono de Birdie en tu pantalla"]}
+  andSteps:["Open the link in <b>Chrome</b>","Tap <b>⋮</b> (three dots, top right)","Choose <b>«Add to Home screen»</b>","Done — the Birdie icon is on your screen"]}
 };
 const p=new URLSearchParams(location.search);
 let lang=p.get("lang"); if(!T[lang]){const n=(navigator.language||"ru").slice(0,2);lang=T[n]?n:"ru";}
-let theme=(p.get("theme")==="day"||p.get("theme")==="light")?"day":"night";
+let theme=(p.get("theme")==="day"||p.get("theme")==="light")?"light":"night";
 const $=i=>document.getElementById(i);
 function links(){
-  $("hubLink").href=HUB+"?lang="+lang;
+  $("hubLink").href=HUB+"?lang="+lang+"&theme="+theme;
   $("brandmark").href=APP+"?lang="+lang+"&theme="+theme;
 }
 function render(){
@@ -111,25 +121,31 @@ function render(){
  $("tabA").textContent="📱 "+L.ios;$("tabB").textContent="🤖 "+L.android;
  $("list-ios").innerHTML=L.iosSteps.map(s=>"<li>"+s+"</li>").join("");
  $("list-android").innerHTML=L.andSteps.map(s=>"<li>"+s+"</li>").join("");
- const bar=$("langbar");bar.innerHTML="";
- Object.keys(T).forEach(c=>{const b=document.createElement("button");b.textContent=c;if(c===lang)b.classList.add("on");
-   b.onclick=()=>{const u=new URL(location.href);u.searchParams.set("lang",c);u.searchParams.set("theme",theme);location.href=u;};bar.appendChild(b);});
+ const NAMES={ru:"Русский",pt:"Português",en:"English"};
+ const box=$("langmenu");box.innerHTML="";
+ Object.keys(T).forEach(c=>{const b=document.createElement("button");if(c===lang)b.className="on";
+   b.innerHTML='<span class="lc">'+c.toUpperCase()+'</span>'+(NAMES[c]||c);
+   b.onclick=()=>{if(c===lang){closeLang();return;}const u=new URL(location.href);u.searchParams.set("lang",c);u.searchParams.set("theme",theme);location.href=u.toString();};box.appendChild(b);});
+ $("langCode").textContent=lang.toUpperCase();
  links();
 }
-function setTheme(t){theme=t;
- if(t==="day")document.documentElement.setAttribute("data-theme","light");
- else document.documentElement.removeAttribute("data-theme");
- $("themeBtn").textContent=t==="day"?"☾":"☀";
- try{localStorage.setItem("birdie_theme",t);}catch(e){}
+function setTheme(t){theme=(t==="light")?"light":"night";
+ document.documentElement.setAttribute("data-theme",theme==="light"?"light":"night");
+ $("themeBtn").textContent=theme==="light"?"☾":"☀";
+ try{localStorage.setItem("birdie_theme",theme);}catch(e){}
  links();
 }
+function closeLang(){const m=$("langmenu");if(m)m.classList.remove("open");const b=$("langBtn");if(b)b.setAttribute("aria-expanded","false");}
+$("langBtn").addEventListener("click",function(e){e.stopPropagation();const m=$("langmenu");const o=m.classList.toggle("open");this.setAttribute("aria-expanded",o?"true":"false");});
+document.addEventListener("click",function(e){const w=$("langBtn").closest(".langwrap");if(w&&!w.contains(e.target))closeLang();});
 document.querySelectorAll(".tab").forEach(t=>t.onclick=function(){
  document.querySelectorAll(".tab").forEach(x=>x.classList.remove("on"));
  document.querySelectorAll(".panel").forEach(x=>x.classList.remove("on"));
  this.classList.add("on");$("panel-"+this.dataset.os).classList.add("on");
 });
-$("themeBtn").onclick=()=>setTheme(theme==="day"?"night":"day");
-if(!p.get("theme")){try{const s=localStorage.getItem("birdie_theme");if(s==="day"||s==="night")theme=s;}catch(e){}}
+$("themeBtn").onclick=()=>setTheme(theme==="light"?"night":"light");
+if(!p.get("theme")){try{const s=localStorage.getItem("birdie_theme");if(s==="day"||s==="light")theme="light";else if(s==="night")theme="night";}catch(e){}}
+var yrEl=$("yr");if(yrEl)yrEl.textContent=new Date().getFullYear();
 render();setTheme(theme);
 </script>
 </body>
